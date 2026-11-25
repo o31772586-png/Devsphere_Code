@@ -1,0 +1,3215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Devsphere Code | الوثيقة التنفيذية الموحدة وحزمة التطوير (V3.0 & V4.0)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #0ea5e9;
+      --accent: #8b5cf6;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --radius: 16px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* =========================================
+       1. Blueprint Grid Theme (Default)
+       ========================================= */
+    body.theme-blueprint {
+      background-color: #f8fafc;
+      background-image:
+        linear-gradient(to right, #e2e8f0 1px, transparent 1px),
+        linear-gradient(to bottom, #e2e8f0 1px, transparent 1px);
+      background-size: 30px 30px;
+      color: #1e293b;
+      --card-bg: rgba(255, 255, 255, 0.92);
+      --card-border: rgba(203, 213, 225, 0.8);
+      --text-muted: #475569;
+      --table-header: #f1f5f9;
+      --table-stripe: #f8fafc;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+    }
+
+    /* =========================================
+       2. Modern Dots Theme
+       ========================================= */
+    body.theme-dots {
+      background-color: #ffffff;
+      background-image: radial-gradient(#cbd5e1 1.5px, transparent 1.5px);
+      background-size: 24px 24px;
+      color: #0f172a;
+      --card-bg: rgba(255, 255, 255, 0.94);
+      --card-border: rgba(226, 232, 240, 0.95);
+      --text-muted: #475569;
+      --table-header: #f8fafc;
+      --table-stripe: #f1f5f9;
+      --code-bg: #1e293b;
+      --code-text: #f8fafc;
+      --shadow: 0 12px 30px -5px rgba(15, 23, 42, 0.05);
+    }
+
+    /* =========================================
+       3. Dark Mode (Tech Radial Gradient)
+       ========================================= */
+    body.theme-dark {
+      background: radial-gradient(circle at top right, #1e293b 0%, #0f172a 45%, #020617 100%);
+      min-height: 100vh;
+      color: #f8fafc;
+      --card-bg: rgba(30, 41, 59, 0.78);
+      --card-border: rgba(71, 85, 105, 0.5);
+      --text-muted: #94a3b8;
+      --table-header: rgba(15, 23, 42, 0.85);
+      --table-stripe: rgba(30, 41, 59, 0.5);
+      --code-bg: #020617;
+      --code-text: #38bdf8;
+      --shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.45);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      line-height: 1.75;
+      transition: var(--transition);
+      padding-bottom: 60px;
+    }
+
+    /* Reading Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 9999;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    /* Top Control Toolbar */
+    .toolbar {
+      position: sticky;
+      top: 12px;
+      z-index: 1000;
+      max-width: 1280px;
+      margin: 12px auto 24px;
+      padding: 10px 20px;
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .brand-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: #fff;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .theme-switcher {
+      display: flex;
+      gap: 6px;
+      background: rgba(148, 163, 184, 0.15);
+      padding: 4px;
+      border-radius: 999px;
+    }
+
+    .theme-btn {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .theme-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .search-input {
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid var(--card-border);
+      color: inherit;
+      font-family: inherit;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      width: 200px;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      width: 240px;
+    }
+
+    .print-btn {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 7px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      transition: var(--transition);
+    }
+
+    .print-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* Layout Container */
+    .layout-wrapper {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    /* Sidebar TOC */
+    .sidebar {
+      position: sticky;
+      top: 84px;
+      background: var(--card-bg);
+      backdrop-filter: blur(14px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      max-height: calc(100vh - 105px);
+      overflow-y: auto;
+    }
+
+    .sidebar h4 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .toc-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .toc-list a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 8px;
+      display: block;
+      transition: var(--transition);
+    }
+
+    .toc-list a:hover, .toc-list a.active {
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .toc-divider {
+      margin: 10px 0 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Main Content */
+    .main-content {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Hero Cover Card */
+    .hero-card {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #312e81 100%);
+      color: #ffffff;
+      border-radius: 22px;
+      padding: 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px -15px rgba(30, 58, 138, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .devsphere-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .logo-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #38bdf8, #818cf8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: #0f172a;
+    }
+
+    .hero-title {
+      font-size: 2.3rem;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 10px;
+      background: linear-gradient(to left, #ffffff, #bae6fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+      color: #cbd5e1;
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      background: rgba(15, 23, 42, 0.55);
+      padding: 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .meta-item span {
+      display: block;
+      font-size: 0.78rem;
+      color: #94a3b8;
+    }
+
+    .meta-item strong {
+      font-size: 0.95rem;
+      color: #f8fafc;
+    }
+
+    /* Section Cards */
+    .doc-section {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(37, 99, 235, 0.2);
+    }
+
+    .section-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .sec-num {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      padding: 4px 12px;
+      border-radius: 10px;
+      min-width: 44px;
+      text-align: center;
+    }
+
+    .section-header h2 {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .part-badge {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(139, 92, 246, 0.14);
+      color: var(--accent);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 18px 0 10px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    p {
+      margin-bottom: 12px;
+    }
+
+    /* Alerts & Callouts */
+    .callout {
+      padding: 14px 18px;
+      border-radius: 12px;
+      margin: 14px 0;
+      border-right: 4px solid var(--primary);
+      background: rgba(37, 99, 235, 0.08);
+      font-size: 0.94rem;
+    }
+
+    .callout.warning {
+      border-right-color: var(--warning);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .callout.danger {
+      border-right-color: var(--danger);
+      background: rgba(239, 68, 68, 0.1);
+    }
+
+    .callout.success {
+      border-right-color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    /* Grid Cards inside Sections */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 14px 0;
+    }
+
+    .mini-card {
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+      background: rgba(148, 163, 184, 0.06);
+    }
+
+    .mini-card h4 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: var(--primary);
+    }
+
+    /* Lists */
+    ul.styled-list, ol.styled-list {
+      padding-right: 22px;
+      margin: 10px 0 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    ul.styled-list li::marker {
+      color: var(--primary);
+    }
+
+    /* Tables */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      margin: 14px 0;
+      border-radius: 12px;
+      border: 1px solid var(--card-border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      text-align: right;
+    }
+
+    thead {
+      background: var(--table-header);
+    }
+
+    th {
+      padding: 12px 14px;
+      font-weight: 800;
+      border-bottom: 2px solid var(--card-border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--card-border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--table-stripe);
+    }
+
+    /* Code & Architecture Diagrams */
+    .code-wrapper {
+      position: relative;
+      margin: 14px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+    }
+
+    .code-header {
+      background: #1e293b;
+      color: #94a3b8;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .copy-btn {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: none;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .copy-btn:hover {
+      background: var(--primary);
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 16px;
+      overflow-x: auto;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.84rem;
+      line-height: 1.6;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .arch-flow {
+      background: var(--code-bg);
+      color: #e2e8f0;
+      padding: 20px;
+      border-radius: 14px;
+      font-family: 'Cairo', sans-serif;
+      text-align: center;
+      margin: 16px 0;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .flow-step {
+      display: inline-block;
+      background: rgba(37, 99, 235, 0.25);
+      border: 1px solid #38bdf8;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      margin: 4px;
+    }
+
+    .flow-arrow {
+      display: block;
+      color: #38bdf8;
+      font-weight: 900;
+      font-size: 1.2rem;
+      margin: 4px 0;
+    }
+
+    .http-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      direction: ltr;
+    }
+    .http-get { background: rgba(16, 185, 129, 0.18); color: #10b981; }
+    .http-post { background: rgba(37, 99, 235, 0.18); color: #3b82f6; }
+    .http-patch { background: rgba(245, 158, 11, 0.18); color: #f59e0b; }
+
+    /* Part Banner Divider */
+    .part-banner {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      color: #fff;
+      padding: 26px 32px;
+      border-radius: 18px;
+      border-right: 6px solid var(--secondary);
+      box-shadow: var(--shadow);
+    }
+
+    .part-banner h2 {
+      font-size: 1.65rem;
+      font-weight: 900;
+      color: #38bdf8;
+      margin-bottom: 6px;
+    }
+
+    /* Footer */
+    .doc-footer {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      border-top: 1px solid var(--card-border);
+      margin-top: 20px;
+    }
+
+    /* =========================================
+       PRINT & PDF OPTIMIZATION (NO EMPTY GAPS)
+       ========================================= */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 12mm 10mm;
+      }
+
+      body {
+        background: #ffffff !important;
+        background-image: none !important;
+        color: #0f172a !important;
+        padding-bottom: 0 !important;
+        font-size: 10.5pt;
+        line-height: 1.55;
+      }
+
+      .toolbar, .sidebar, .progress-container, .copy-btn {
+        display: none !important;
+      }
+
+      .layout-wrapper {
+        display: block !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+
+      .main-content {
+        display: block !important;
+      }
+
+      .hero-card {
+        background: #0f172a !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 24px !important;
+        margin-bottom: 14px !important;
+        border-radius: 12px !important;
+        break-inside: avoid;
+      }
+
+      .part-banner {
+        background: #1e293b !important;
+        color: #ffffff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        padding: 16px 20px !important;
+        margin: 14px 0 !important;
+        break-inside: avoid;
+        break-after: avoid;
+      }
+
+      .doc-section {
+        background: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        padding: 16px 18px !important;
+        margin-bottom: 12px !important;
+        border-radius: 10px !important;
+        /* Allow large sections to flow naturally across pages without leaving huge empty spaces */
+        break-inside: auto;
+      }
+
+      .section-header, h3, .callout, .mini-card, .code-wrapper, .arch-flow {
+        break-inside: avoid;
+      }
+
+      .section-header, h3 {
+        break-after: avoid;
+      }
+
+      .table-responsive {
+        overflow: visible !important;
+        border: 1px solid #94a3b8 !important;
+        margin: 8px 0 !important;
+      }
+
+      table {
+        font-size: 8.8pt !important;
+        page-break-inside: auto;
+      }
+
+      tr {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      thead {
+        display: table-header-group;
+        background: #e2e8f0 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      th, td {
+        padding: 6px 8px !important;
+        border-bottom: 1px solid #cbd5e1 !important;
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+
+      pre {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        white-space: pre-wrap !important;
+        word-break: break-word !important;
+        font-size: 8.5pt !important;
+        padding: 10px !important;
+      }
+
+      .code-header {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+      }
+    }
+
+    @media (max-width: 960px) {
+      .layout-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        display: none;
+      }
+      .toolbar {
+        border-radius: 16px;
+      }
+    }
+  </style>
+</head>
+<body class="theme-blueprint">
+
+  <!-- Reading Progress -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Floating Interactive Toolbar -->
+  <header class="toolbar">
+    <div class="brand-mini">
+      <span>Devsphere Code</span>
+      <span class="brand-badge">MASTER DOC V3.0 + V4.0</span>
+    </div>
+
+    <div class="theme-switcher" role="group" aria-label="تغيير نمط الخلفية">
+      <button class="theme-btn active" onclick="setTheme('blueprint', this)">📐 Blueprint Grid</button>
+      <button class="theme-btn" onclick="setTheme('dots', this)">⚪ Modern Dots</button>
+      <button class="theme-btn" onclick="setTheme('dark', this)">🌙 Dark Mode</button>
+    </div>
+
+    <div class="toolbar-actions">
+      <input type="text" id="docSearch" class="search-input" placeholder="🔍 ابحث في الوثيقة..." onkeyup="filterSections()" />
+      <button class="print-btn" onclick="window.print()">🖨️ تصدير PDF</button>
+    </div>
+  </header>
+
+  <div class="layout-wrapper">
+    <!-- Smart Navigation Sidebar -->
+    <aside class="sidebar">
+      <h4>📑 فهرس الوثيقة الموحدة</h4>
+      <ul class="toc-list">
+        <li class="toc-divider">الجزء 1: منظومة Devsphere CodeLIVE (V3.0)</li>
+        <li><a href="#live-1">1. ملخص المشروع والقرارات المعتمدة</a></li>
+        <li><a href="#live-2">2. مواصفات Devsphere CodeLIVE</a></li>
+        <li><a href="#live-3">3. دورة التشغيل والأدوار</a></li>
+        <li><a href="#live-4">4. قاعدة بيانات Devsphere Code LIVE</a></li>
+        <li><a href="#live-5">5. واجهات API ودمج Backend</a></li>
+        <li><a href="#live-6">6. خطة الحماية والأمن</a></li>
+        <li><a href="#live-7">7. Hybrid Hosting والتشغيل</a></li>
+        <li><a href="#live-8">8. التكامل مع Devsphere Code</a></li>
+        <li><a href="#live-9">9. الاختبار وشروط القبول</a></li>
+        <li><a href="#live-10">10. التكاليف والامتثال قبل الإنتاج</a></li>
+
+        <li class="toc-divider">الجزء 2: الدليل التنفيذي الشامل</li>
+        <li><a href="#guide-intro">بيانات الدليل وفهرس الأقسام</a></li>
+        <li><a href="#guide-01">01. الرؤية ونموذج العمل</a></li>
+        <li><a href="#guide-02">02. المتطلبات وتجربة المستخدم</a></li>
+        <li><a href="#guide-03">03. المعمارية التقنية والأدوات</a></li>
+        <li><a href="#guide-04">04. التطوير من أول حرف كود</a></li>
+        <li><a href="#guide-05">05. الذكاء الاصطناعي في التطوير</a></li>
+        <li><a href="#guide-06">06. قاعدة البيانات وواجهات API</a></li>
+        <li><a href="#guide-07">07. وحدات Devsphere Code</a></li>
+        <li><a href="#guide-08">08. الأمن والخصوصية</a></li>
+        <li><a href="#guide-09">09. الدفع والمالية</a></li>
+        <li><a href="#guide-10">10. الضرائب والقانون وحقوق النشر</a></li>
+        <li><a href="#guide-11">11. الاختبار وضمان الجودة</a></li>
+        <li><a href="#guide-12">12. النشر والتشغيل</a></li>
+        <li><a href="#guide-13">13. الميزانية ونسب التكلفة</a></li>
+        <li><a href="#guide-14">14. نماذج الأرباح والحسابات</a></li>
+        <li><a href="#guide-15">15. الإدارة والحوكمة</a></li>
+        <li><a href="#guide-16">16. خارطة طريق 180 يومًا</a></li>
+        <li><a href="#guide-17">17. قوائم مراجعة التنفيذ</a></li>
+        <li><a href="#guide-appendix">ملحق: القوالب والمصطلحات والمراجع</a></li>
+
+        <li class="toc-divider">الجزء 3: حزمة التطوير التنفيذية (V4.0)</li>
+        <li><a href="#dev-1">1. نطاق حزمة التطوير وحالة التسليم</a></li>
+        <li><a href="#dev-2">2. SRS – المتطلبات الوظيفية</a></li>
+        <li><a href="#dev-3">3. SRS – حالات الاستخدام وقواعد العمل</a></li>
+        <li><a href="#dev-4">4. بنية البيانات Database Migration</a></li>
+        <li><a href="#dev-5">5. عقد الواجهات OpenAPI</a></li>
+        <li><a href="#dev-6">6. حزمة الواجهات Web & Flutter</a></li>
+        <li><a href="#dev-7">7. ضوابط الحماية Security</a></li>
+        <li><a href="#dev-8">8. QA خطة الاختبار ومعايير القبول</a></li>
+        <li><a href="#dev-9">9. خطة الدمج والتسليم للفريق</a></li>
+        <li><a href="#dev-10">10. الملفات المصدرية والبرومبتات</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Document Body -->
+    <main class="main-content" id="documentRoot">
+
+      <!-- MASTER HERO COVER -->
+      <section class="hero-card">
+        <div class="devsphere-header">
+          <div class="logo-box">
+            <div class="logo-icon">DS</div>
+            <div>
+              <div style="font-weight: 900; font-size: 1.15rem; letter-spacing: 0.5px;">DevSphere INTERNATIONAL</div>
+              <div style="font-size: 0.8rem; color: #94a3b8;">MASTER PROJECT DOCUMENT</div>
+            </div>
+          </div>
+          <span class="hero-tag" style="background: rgba(56, 189, 248, 0.2); border-color: #38bdf8;">تصميم تنفيذي مرجعي - غير منفذ بعد</span>
+        </div>
+
+        <h1 class="hero-title">Devsphere Code</h1>
+        <p class="hero-subtitle">الوثيقة التنفيذية الموحدة للمشروع مع إضافة منظومة الفصول الافتراضية والبث المباشر Devsphere Code LIVE</p>
+
+        <div class="hero-tags">
+          <span class="hero-tag">🌐 Web (Next.js)</span>
+          <span class="hero-tag">📱 Flutter (Android & iOS)</span>
+          <span class="hero-tag">🤖 Hybrid AI + RAG</span>
+          <span class="hero-tag">🎥 Live Learning (LiveKit)</span>
+          <span class="hero-tag">🏢 Multi-tenant SaaS</span>
+        </div>
+
+        <div class="meta-grid">
+          <div class="meta-item">
+            <span>الشركة المنفذة</span>
+            <strong>Devsphere International</strong>
+          </div>
+          <div class="meta-item">
+            <span>المطور والمعماري</span>
+            <strong>Mahmoud Eltbakh</strong>
+          </div>
+          <div class="meta-item">
+            <span>الإصدار والتاريخ</span>
+            <strong>V3.0 - 23 November 2026 (مع ملحق V4.0)</strong>
+          </div>
+          <div class="meta-item">
+            <span>حالة الوثيقة</span>
+            <strong>تصميم تنفيذي مرجعي - غير منفذ بعد</strong>
+          </div>
+        </div>
+      </section>
+
+      <div class="callout warning">
+        <strong>تنويه تنفيذي هام:</strong> منصة تعليم لغات متكاملة. هذه وثيقة تصميم وتخطيط تنفيذ. لا تعني أن الخوادم أو المدفوعات أو خدمات البث قد تم تشغيلها فعلياً.
+      </div>
+
+      <!-- =========================================================
+           PART 1: Devsphere Code & Devsphere CodeLIVE (V3.0)
+           ========================================================= -->
+      <div class="part-banner">
+        <h2>الجزء الأول: الوثيقة التنفيذية الموحدة ومنظومة Devsphere Code LIVE</h2>
+        <p style="margin:0; color:#cbd5e1;">المعمارية الأساسية، الفصول الافتراضية، قاعدة البيانات، واجهات API، الحماية، والامتثال قبل الإنتاج (الإصدار V3.0).</p>
+      </div>
+
+      <!-- Section 1 -->
+      <section class="doc-section" id="live-1">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">01</span>
+            <h2>ملخص المشروع والقرارات المعتمدة</h2>
+          </div>
+          <span class="part-badge">Devsphere Code V3.0</span>
+        </div>
+        <p><strong>Devsphere Code</strong> منصة تعليم لغات قابلة للتوسع، تجمع إدارة الكورسات والطلاب والمدرسين والاختبارات والمدفوعات والتحليلات والمساعد الذكي، مع دعم الأكاديميات المتعددة.</p>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>الواجهات</h4>
+            <p style="margin:0;">Web + Flutter</p>
+          </div>
+          <div class="mini-card">
+            <h4>قاعدة البيانات</h4>
+            <p style="margin:0;">PostgreSQL</p>
+          </div>
+          <div class="mini-card">
+            <h4>المساعد الذكي</h4>
+            <p style="margin:0;">Hybrid AI</p>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المجال</th>
+                <th>القرار المعتمد</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Web</strong></td><td>Next.js + TypeScript</td></tr>
+              <tr><td><strong>Mobile</strong></td><td>Flutter - Android & iOS</td></tr>
+              <tr><td><strong>Backend</strong></td><td>NestJS + TypeScript</td></tr>
+              <tr><td><strong>Database / Cache</strong></td><td>PostgreSQL + Redis</td></tr>
+              <tr><td><strong>Architecture</strong></td><td>Modular Monolith مع خدمات متخصصة عند الحاجة</td></tr>
+              <tr><td><strong>AI</strong></td><td>هجين: مزودات خارجية + قاعدة معرفة و RAG</td></tr>
+              <tr><td><strong>Face verification</strong></td><td>مزود خارجي اختياري، مع بديل يدوي</td></tr>
+              <tr><td><strong>Development</strong></td><td>إعادة بناء كاملة وفق المتطلبات المعتمدة</td></tr>
+              <tr><td><strong>Tenant model</strong></td><td>Multi-tenant SaaS مع عزل بيانات المؤسسات</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>الوحدات الرئيسية للمنصة</h3>
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>التعلم</h4>
+            <p style="margin:0;">Courses, Modules, Lessons, Enrollments, LMS</p>
+          </div>
+          <div class="mini-card">
+            <h4>التقييم</h4>
+            <p style="margin:0;">Exams, Attempts, Rubrics, Grading Reviews</p>
+          </div>
+          <div class="mini-card">
+            <h4>الإدارة</h4>
+            <p style="margin:0;">Admin, Teacher, Student, Owner, Super Admin</p>
+          </div>
+          <div class="mini-card">
+            <h4>التحليلات</h4>
+            <p style="margin:0;">Devsphere Code STUDENT 360 وتقارير التقدم</p>
+          </div>
+          <div class="mini-card">
+            <h4>المجتمع والمكتبة</h4>
+            <p style="margin:0;">Devsphere Code Library, Ask, Shorts, Community</p>
+          </div>
+          <div class="mini-card">
+            <h4>التشغيل</h4>
+            <p style="margin:0;">Payments, Notifications, Audit, Monitoring</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 2 -->
+      <section class="doc-section" id="live-2">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">02</span>
+            <h2>Devsphere Code LIVE – مواصفات المنتج</h2>
+          </div>
+          <span class="part-badge">الفصول الافتراضية</span>
+        </div>
+        <p>منظومة فصول افتراضية مدمجة داخل <strong>Devsphere Code</strong> تتيح المحاضرات التفاعلية والبث التعليمي، وتعمل على الويب وتطبيق الهاتف.</p>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>Interactive Classroom</h4>
+            <p style="margin:0;">المدرس والطلاب يشاركون بالصوت والصورة وفق صلاحيات يحددها المدرس.</p>
+          </div>
+          <div class="mini-card">
+            <h4>Broadcast Classroom</h4>
+            <p style="margin:0;">المحاضر يبث، والطلاب يشاهدون ويتفاعلون عبر المحادثة ورفع اليد.</p>
+          </div>
+          <div class="mini-card">
+            <h4>Automatic Recording</h4>
+            <p style="margin:0;">تسجيل تلقائي وفق سياسة الأكاديمية والموافقات.</p>
+          </div>
+          <div class="mini-card">
+            <h4>Optional Recording</h4>
+            <p style="margin:0;">المدرس يبدأ أو يوقف التسجيل إذا سمحت السياسة.</p>
+          </div>
+        </div>
+
+        <h3>الوظائف داخل الفصل</h3>
+        <ul class="styled-list">
+          <li>صوت وصورة بجودة متكيفة ومشاركة شاشة.</li>
+          <li>سبورة تفاعلية وعرض ملفات وعروض تقديمية.</li>
+          <li>محادثة ورفع يد وأسئلة واستطلاعات قصيرة.</li>
+          <li>مضيف ومساعد مدرس ومشاركون بصلاحيات مختلفة.</li>
+          <li>غرفة انتظار وكتم وإزالة وإبلاغ وإدارة سلوك.</li>
+          <li>تسجيل المحاضرة ومعالجتها وإضافتها إلى مكتبة الطالب المصرح له.</li>
+          <li>إعادة الاتصال عند انقطاع الشبكة ومؤشرات جودة الاتصال.</li>
+        </ul>
+
+        <h3>محرك الاتصال (Connectivity Engine)</h3>
+        <p>الاختيار التقني الأساسي هو <strong>LiveKit</strong> كـ WebRTC SFU، مع <strong>Provider Adapter</strong> داخل Backend لتقليل الارتباط بمزود واحد. يمكن تشغيل LiveKit Cloud في البداية ثم إضافة Self-hosted في بيئة مستقلة بعد اختبار الأداء والتكلفة.</p>
+
+        <div class="arch-flow">
+          <div class="flow-step">Devsphere Code Web / Flutter (واجهات الطالب والمدرس)</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">NestJS Backend (الهوية - التسجيل - الصلاحيات - إصدار الرموز + Webhooks)</div>
+          <div class="flow-arrow">↓</div>
+          <div>
+            <span class="flow-step">LiveKit Cloud (خدمة سحابية مدارة)</span>
+            <span style="margin: 0 8px; font-weight:800;">⇄</span>
+            <span class="flow-step">Self-hosted LiveKit (بيئة خاصة مستقلة)</span>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-step">Private Recording Storage (تسجيلات خاصة ومحمية وروابط مشاهدة مؤقتة)</div>
+        </div>
+      </section>
+
+      <!-- Section 3 -->
+      <section class="doc-section" id="live-3">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">03</span>
+            <h2>Devsphere Code LIVE – دورة التشغيل والأدوار</h2>
+          </div>
+          <span class="part-badge">الصلاحيات والحضور</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الدور</th>
+                <th>الصلاحيات الأساسية</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Owner / Admin</strong></td><td>إعداد السياسات، جدولة المحاضرات، تعيين المدرسين، مراجعة السجلات.</td></tr>
+              <tr><td><strong>Teacher / Host</strong></td><td>بدء وإنهاء الفصل، مشاركة المحتوى، إدارة المايك والكاميرا، التسجيل وفق السياسة.</td></tr>
+              <tr><td><strong>Moderator</strong></td><td>إدارة المحادثة والمشاركين والبلاغات وفق تفويض محدد.</td></tr>
+              <tr><td><strong>Student</strong></td><td>الانضمام للمحاضرة المصرح بها، المشاهدة، السؤال، رفع اليد.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>تسلسل المحاضرة</h3>
+        <ol class="styled-list">
+          <li>إنشاء المحاضرة وربطها بكورس ومدرس ومجموعة طلاب.</li>
+          <li>التحقق من صلاحيات المدرس وجدول الكورس.</li>
+          <li>إنشاء غرفة لدى مزود البث وتخزين معرفها.</li>
+          <li>إشعار الطلاب قبل الموعد.</li>
+          <li>الطالب يطلب الانضمام، ويتحقق Backend من الحساب والتسجيل والحظر والتوقيت.</li>
+          <li>إصدار رمز اتصال قصير العمر وبأقل صلاحيات.</li>
+          <li>بدء التسجيل إذا كانت السياسة والموافقات تسمح.</li>
+          <li>إنهاء الجلسة ومعالجة التسجيل وتحديث الحضور والتقارير.</li>
+        </ol>
+
+        <div class="callout danger">
+          <strong>قاعدة أمنية:</strong> رابط المحاضرة وحده لا يمنح حق الدخول. كل طالب يحصل على صلاحيات من Backend بعد التحقق من التسجيل في الكورس وحالة الحساب وسياسة الجلسة.
+        </div>
+
+        <h3>الحضور والخصوصية والتسجيل</h3>
+        <ul class="styled-list">
+          <li><strong>الحضور:</strong> يسجل النظام وقت الانضمام والخروج وإعادة الاتصال ومدة الاتصال الفعلية. لا يعتبر فتح الرابط حضورًا كاملاً، وتحدد الأكاديمية معيار احتساب الحضور وتتيح للمدرس مراجعة الحالات الاستثنائية.</li>
+          <li><strong>الخصوصية والتسجيل:</strong> يظهر إشعار واضح قبل التسجيل، وتُجمع الموافقات اللازمة بحسب سياسة الأكاديمية والقانون. تسجل موافقة المستخدم وإصدار السياسة والتوقيت. يجب توفير بدائل مناسبة وإجراءات خاصة بالقصر عند انطباقها.</li>
+        </ul>
+      </section>
+
+      <!-- Section 4 -->
+      <section class="doc-section" id="live-4">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">04</span>
+            <h2>قاعدة بيانات Devsphere Code LIVE</h2>
+          </div>
+          <span class="part-badge">PostgreSQL Schema</span>
+        </div>
+        <p>تضاف الجداول كوحدة مستقلة في <strong>PostgreSQL</strong> وترتبط بكيانات المنصة الأساسية: <code>tenants, users, courses, enrollments</code>.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الجدول</th>
+                <th>الحقول المهمة</th>
+                <th>الغرض</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>live_sessions</code></td><td><code>id, tenant_id, course_id, teacher_id, mode, status, scheduled_start/end</code></td><td>بيانات المحاضرة</td></tr>
+              <tr><td><code>live_rooms</code></td><td><code>session_id, provider, provider_room_id, region</code></td><td>غرف مزود البث</td></tr>
+              <tr><td><code>live_participants</code></td><td><code>session_id, user_id, participant_role</code></td><td>المشاركون وأدوارهم</td></tr>
+              <tr><td><code>live_access_grants</code></td><td><code>participant_id, expires_at, revoked_at</code></td><td>منح وإبطال الدخول</td></tr>
+              <tr><td><code>live_attendance</code></td><td><code>participant_id, joined_at, left_at, duration</code></td><td>الحضور الفعلي</td></tr>
+              <tr><td><code>live_recordings</code></td><td><code>session_id, storage_key, status, duration</code></td><td>التسجيلات</td></tr>
+              <tr><td><code>live_recording_consents</code></td><td><code>session_id, user_id, consent_status, policy_version</code></td><td>الموافقات</td></tr>
+              <tr><td><code>live_chat_messages</code></td><td><code>session_id, sender_id, message, created_at</code></td><td>المحادثة</td></tr>
+              <tr><td><code>live_moderation_events</code></td><td><code>session_id, actor_id, action, target_id</code></td><td>الإشراف</td></tr>
+              <tr><td><code>live_hand_raises</code></td><td><code>session_id, user_id, status</code></td><td>رفع اليد</td></tr>
+              <tr><td><code>live_polls / responses</code></td><td><code>poll_id, user_id, answer</code></td><td>الاستطلاعات</td></tr>
+              <tr><td><code>live_webhook_events</code></td><td><code>provider_event_id, event_type, processed_at</code></td><td>أحداث المزود ومنع التكرار</td></tr>
+              <tr><td><code>live_quality_metrics</code></td><td><code>participant_id, recorded_at, metrics</code></td><td>جودة الاتصال</td></tr>
+              <tr><td><code>live_audit_logs</code></td><td><code>tenant_id, actor_id, action, metadata</code></td><td>سجل تدقيق مستقل</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>قواعد تصميم البيانات</h3>
+        <ul class="styled-list">
+          <li>UUID للمفاتيح الأساسية و Foreign Keys للعلاقات.</li>
+          <li>كل سجل مؤسسي يحمل <code>tenant_id</code>، مع تحقق من تطابق المؤسسة بين الجداول.</li>
+          <li>قيود فريدة لمنع تكرار غرفة المزود وأحداث Webhook.</li>
+          <li>فهارس على <code>tenant_id, session_id, user_id, status, scheduled_start</code>.</li>
+          <li>أوقات UTC باستخدام <code>TIMESTAMPTZ</code>، مع عرض توقيت الأكاديمية للمستخدم.</li>
+          <li>لا تحفظ مفاتيح LiveKit السرية أو رموز الاتصال طويلة الأجل في قاعدة البيانات.</li>
+          <li>سياسات احتفاظ وحذف للتسجيلات والمحادثات وسجلات الجودة.</li>
+        </ul>
+      </section>
+
+      <!-- Section 5 -->
+      <section class="doc-section" id="live-5">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">05</span>
+            <h2>واجهات API ودمج Backend</h2>
+          </div>
+          <span class="part-badge">/api/v1/live</span>
+        </div>
+        <p>المسارات المقترحة تبدأ بـ <code>/api/v1/live</code> وتخضع جميعها للمصادقة والصلاحيات و <strong>Tenant Guard</strong>.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Method</th>
+                <th>Endpoint</th>
+                <th>الوظيفة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions</code></td><td>إنشاء محاضرة</td></tr>
+              <tr><td><span class="http-badge http-get">GET</span></td><td><code>/sessions</code></td><td>قائمة المحاضرات حسب الصلاحية</td></tr>
+              <tr><td><span class="http-badge http-get">GET</span> / <span class="http-badge http-patch">PATCH</span></td><td><code>/sessions/:id</code></td><td>عرض وتعديل محاضرة</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/start</code></td><td>بدء الجلسة</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/end</code></td><td>إنهاء الجلسة</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/join-token</code></td><td>التحقق وإصدار رمز مؤقت</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/leave</code></td><td>تسجيل الخروج</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/recording/start</code></td><td>بدء التسجيل وفق السياسة</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/recording/stop</code></td><td>إيقاف التسجيل</td></tr>
+              <tr><td><span class="http-badge http-get">GET</span></td><td><code>/sessions/:id/recordings</code></td><td>التسجيلات المتاحة</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/moderation</code></td><td>إدارة المشاركين</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/sessions/:id/polls</code></td><td>إنشاء استطلاع</td></tr>
+              <tr><td><span class="http-badge http-post">POST</span></td><td><code>/webhooks/livekit</code></td><td>استقبال أحداث مزود البث</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>منطق إصدار رمز الانضمام (Join Token Logic)</h3>
+        <ol class="styled-list">
+          <li>قراءة هوية المستخدم من جلسة موثقة، وليس من body.</li>
+          <li>التحقق من tenant و Enrollment وحالة المحاضرة.</li>
+          <li>تحديد الدور المسموح به (Host / Moderator / Student).</li>
+          <li>إنشاء Token قصير العمر بأقل grants لازمة.</li>
+          <li>إرجاع عنوان الاتصال والرمز ووقت الانتهاء فقط.</li>
+          <li>تسجيل عملية الإصدار دون تسجيل الرمز نفسه.</li>
+        </ol>
+
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>HTTP Request & Sample Response</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ الكود</button>
+          </div>
+          <pre>POST /api/v1/live/sessions/{id}/join-token
+Authorization: Bearer &lt;USER_ACCESS_TOKEN&gt;
+
+Response:
+{
+  "success": true,
+  "data": {
+    "serverUrl": "wss://live.example.com",
+    "token": "SHORT_LIVED_TOKEN",
+    "roomName": "session-room-id",
+    "expiresIn": 300
+  }
+}</pre>
+        </div>
+        <p style="font-size: 0.88rem; color: var(--text-muted);">الاستجابة نموذج توضيحي وليست خدمة عاملة. يجب إخفاء الأسرار في Secret Manager، وتطبيق Rate Limiting و Idempotency والتحقق من توقيع Webhooks.</p>
+      </section>
+
+      <!-- Section 6 -->
+      <section class="doc-section" id="live-6">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">06</span>
+            <h2>خطة الحماية والأمن</h2>
+          </div>
+          <span class="part-badge">Defense in Depth</span>
+        </div>
+        <p>الحماية متعددة الطبقات، ولا يوجد نظام يمكن ضمان تأمينه بنسبة 100%. الهدف هو تقليل سطح الهجوم، ومنع الوصول غير المصرح، واكتشاف الحوادث والاستجابة لها.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الطبقة</th>
+                <th>الضوابط الأمنية</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Identity</strong></td><td>SSO مع Devsphere Code، MFA للإدارة والمدرسين، جلسات آمنة، إبطال الجلسات.</td></tr>
+              <tr><td><strong>Authorization</strong></td><td>RBAC + Tenant Guard + التحقق من التسجيل في الكورس على الخادم.</td></tr>
+              <tr><td><strong>Live Tokens</strong></td><td>قصيرة العمر، أقل صلاحيات، لا أسرار في Web أو Flutter، منع مشاركة الصلاحيات.</td></tr>
+              <tr><td><strong>Transport</strong></td><td>HTTPS/WSS, DTLS-SRTP وفق إعداد WebRTC، وإعداد TURN عند الحاجة.</td></tr>
+              <tr><td><strong>Network</strong></td><td>جدار ناري، منافذ ضرورية فقط، شبكات خاصة للخدمات وقواعد البيانات.</td></tr>
+              <tr><td><strong>Storage</strong></td><td>Private Bucket، تشفير أثناء النقل والتخزين، Signed URLs قصيرة العمر.</td></tr>
+              <tr><td><strong>Abuse</strong></td><td>Rate Limits، انتظار، كتم وطرد وحظر، إبلاغ ومراجعة Moderation.</td></tr>
+              <tr><td><strong>Audit</strong></td><td>سجلات إدارية ومراقبة محاولات الدخول والتغييرات الحساسة.</td></tr>
+              <tr><td><strong>Operations</strong></td><td>تحديثات دورية، نسخ احتياطي مشفر، اختبار استعادة، تنبيهات ومراقبة.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>التسجيل والتشفير</h4>
+            <p style="margin:0; font-size:0.9rem;">تشفير النقل والتخزين مطلوب للتسجيلات. يجب التمييز بين تشفير النقل و E2EE؛ تسجيل الخادم يتطلب وصول خدمة التسجيل إلى الوسائط لذلك لا يجوز الادعاء بتوافق تسجيل الخادم مع E2EE كامل لا يستطيع الخادم فك تشفيره. أي وضع E2EE يقدم كميزة منفصلة مع قيود واضحة.</p>
+          </div>
+          <div class="mini-card">
+            <h4>مكافحة تسريب المحتوى</h4>
+            <ul class="styled-list" style="font-size:0.88rem; margin:0;">
+              <li>علامة مائية باسم الطالب أو معرفه عند عرض التسجيل وفق سياسة الخصوصية.</li>
+              <li>روابط مشاهدة مؤقتة والتحقق من الصلاحية عند كل طلب.</li>
+              <li>تسجيل أحداث المشاهدة والتنزيل المسموح به.</li>
+              <li>عدم إتاحة الملفات عبر Public URLs.</li>
+              <li><em>تنبيه:</em> لا يمكن ضمان منع تصوير الشاشة بجهاز خارجي أو كل طرق تسجيل الشاشة.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>خصوصية الطلاب والقصر</h4>
+            <p style="margin:0; font-size:0.9rem;">إشعار التسجيل والموافقة وسياسة الاحتفاظ والحد الأدنى من البيانات، ووسيلة بديلة عند الحاجة، وإجراءات بلاغات وإشراف مناسبة. لا تستخدم تحليل الوجه لقياس الانتباه أو استنتاج حالة نفسية.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7 -->
+      <section class="doc-section" id="live-7">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">07</span>
+            <h2>Hybrid Hosting والتشغيل</h2>
+          </div>
+          <span class="part-badge">البنية التحتية والمراقبة</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>LiveKit Cloud (المرحلة الأولى)</h4>
+            <p style="margin:0;">إطلاق أسرع وتقليل عبء تشغيل البنية.</p>
+          </div>
+          <div class="mini-card">
+            <h4>Self-hosted (مرحلة لاحقة)</h4>
+            <p style="margin:0;">تحكم أكبر بعد دراسة التكلفة والأداء والامتثال.</p>
+          </div>
+        </div>
+
+        <h3>سياسة التوجيه (Routing Policy)</h3>
+        <ul class="styled-list">
+          <li>تحدد بيئة كل محاضرة وقت الإنشاء، وتخزن في <code>live_rooms</code>. لا يتم نقل غرفة نشطة بين مزودين أثناء انعقادها.</li>
+          <li>تستخدم <strong>Provider Adapter</strong> لتوحيد أوامر إنشاء الغرف والتسجيل وإنهائها.</li>
+          <li>يتم اختبار سعة الخادم ومناطق الاتصال قبل تحويل أحمال حقيقية إليه.</li>
+          <li>خطة تعافي واضحة: لا يعد الانتقال بين السحابة والخادم الخاص انتقالاً بلا انقطاع.</li>
+        </ul>
+
+        <h3>مراقبة التشغيل</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المؤشر</th>
+                <th>ما تتم مراقبته</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Availability</strong></td><td>توفر واجهات API وغرف الاتصال.</td></tr>
+              <tr><td><strong>Connection Quality</strong></td><td>زمن التأخير وفقد الحزم وإعادة الاتصال.</td></tr>
+              <tr><td><strong>Recording</strong></td><td>بدء التسجيل وفشله ومعالجته وتخزينه.</td></tr>
+              <tr><td><strong>Security</strong></td><td>محاولات الدخول الفاشلة والأحداث المشبوهة.</td></tr>
+              <tr><td><strong>Capacity</strong></td><td>المشاركون المتزامنون واستهلاك CPU / Network.</td></tr>
+              <tr><td><strong>Cost</strong></td><td>ساعات الاستخدام والتسجيل والتخزين ونقل البيانات.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>خطة النسخ الاحتياطي والاستعادة</h3>
+        <ul class="styled-list">
+          <li>نسخ احتياطي دوري لقاعدة البيانات مع تشفير وفصل صلاحيات.</li>
+          <li>سياسة احتفاظ متعددة المستويات واختبار استعادة فعلي.</li>
+          <li>تخزين أسرار الإنتاج خارج المستودع البرمجي.</li>
+          <li>توثيق إجراءات Incident Response ومسؤوليات الفريق.</li>
+        </ul>
+      </section>
+
+      <!-- Section 8 -->
+      <section class="doc-section" id="live-8">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">08</span>
+            <h2>التكامل مع Devsphere Code</h2>
+          </div>
+          <span class="part-badge">ربط الوحدات وهيكل الملفات</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الوحدة</th>
+                <th>آلية التكامل</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Authentication</strong></td><td>تسجيل دخول موحد والتحقق من حالة الحساب.</td></tr>
+              <tr><td><strong>Courses / Enrollments</strong></td><td>ربط الجلسة بالكورس والتحقق من تسجيل الطالب.</td></tr>
+              <tr><td><strong>Teachers</strong></td><td>التحقق من تعيين المدرس وصلاحيات المضيف.</td></tr>
+              <tr><td><strong>Attendance</strong></td><td>تجميع أوقات الدخول والخروج والاتصال الفعلي.</td></tr>
+              <tr><td><strong>STUDENT 360</strong></td><td>إضافة حضور وتقدم ومشاركة ومؤشرات جودة.</td></tr>
+              <tr><td><strong>Notifications</strong></td><td>تذكير قبل المحاضرة وتنبيه عند تغيير الموعد.</td></tr>
+              <tr><td><strong>Library</strong></td><td>إتاحة التسجيلات بعد التحقق من الصلاحية.</td></tr>
+              <tr><td><strong>AI Assistant</strong></td><td>ملخصات وأسئلة مراجعة بعد الموافقة وتحديد مصادر البيانات.</td></tr>
+              <tr><td><strong>Payments</strong></td><td>التحقق من صلاحية الاشتراك دون كشف معلومات مالية للمدرس.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>مؤشرات Devsphere Code STUDENT 360</h3>
+        <ul class="styled-list">
+          <li>عدد المحاضرات المسجل فيها والملتحق بها.</li>
+          <li>إجمالي مدة الاتصال الفعلية ونسبة الحضور وفق سياسة الكورس.</li>
+          <li>أحداث إعادة الاتصال ومؤشرات جودة الشبكة.</li>
+          <li>مشاهدة التسجيلات المصرح بها.</li>
+          <li>الأسئلة والمشاركة التعليمية، دون استنتاجات غير مدعومة عن الانتباه.</li>
+          <li>ملخصات وتوصيات AI مع توضيح مصدرها وإتاحة مراجعة بشرية.</li>
+        </ul>
+
+        <h3>هيكل الملفات (Monorepo Structure)</h3>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Project Directory Structure</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ الهيكل</button>
+          </div>
+          <pre>apps/
+  web/src/modules/live/
+    classrooms/ teacher-controls/ student-room/ whiteboard/ chat/ recordings/
+  mobile/lib/features/live/
+    classroom/ controls/ chat/ recordings/
+  api/src/modules/live/
+    live.controller.ts
+    live.service.ts
+    live.gateway.ts
+    providers/
+      live-provider.interface.ts
+      livekit.provider.ts
+    recordings/ attendance/ moderation/ webhooks/ dto/
+database/
+  migrations/live/
+  seeds/live/
+docs/
+  Devsphere Code_LIVE_SRS.md
+  Devsphere Code_LIVE_API.yaml
+  Devsphere Code_LIVE_SECURITY.md</pre>
+        </div>
+      </section>
+
+      <!-- Section 9 -->
+      <section class="doc-section" id="live-9">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">09</span>
+            <h2>الاختبار وشروط القبول وخارطة الطريق</h2>
+          </div>
+          <span class="part-badge">QA & Roadmap</span>
+        </div>
+
+        <h3>اختبارات إلزامية قبل الإطلاق</h3>
+        <ul class="styled-list">
+          <li>اختبار الدخول والصلاحيات لكل دور.</li>
+          <li>رفض طالب غير مسجل في الكورس أو من مؤسسة أخرى.</li>
+          <li>اختبار انتهاء الرمز وإبطاله بعد الحظر أو انتهاء الجلسة.</li>
+          <li>اختبار النمطين Interactive و Broadcast على Web و Flutter.</li>
+          <li>اختبار التسجيل التلقائي والاختياري وحالات فشل التسجيل.</li>
+          <li>اختبار مشاهدة التسجيل بحساب غير مصرح.</li>
+          <li>اختبار Webhooks المكررة وغير الصحيحة.</li>
+          <li>اختبار ضعف الشبكة والانقطاع وإعادة الاتصال.</li>
+          <li>اختبار ضغط حسب عدد المستخدمين المتزامنين المستهدف.</li>
+          <li>اختبار النسخ الاحتياطي والاستعادة.</li>
+          <li>مراجعة أمنية واختبار اختراق قبل الإطلاق.</li>
+        </ul>
+
+        <h3>معايير القبول (Acceptance Criteria)</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المعيار</th>
+                <th>شرط النجاح</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Access Control</strong></td><td>لا يستطيع مستخدم غير مخول دخول غرفة أو تسجيل أو مشاهدة تسجيل.</td></tr>
+              <tr><td><strong>Tenant Isolation</strong></td><td>لا يحدث أي وصول عابر بين مؤسستين في الاختبارات.</td></tr>
+              <tr><td><strong>Session Modes</strong></td><td>يعمل النمطان وفق إعدادات وسياسات الأكاديمية.</td></tr>
+              <tr><td><strong>Recording</strong></td><td>تسجيل وفق الموافقات والسياسة مع حفظ خاص ومعالجة حالة الفشل.</td></tr>
+              <tr><td><strong>Attendance</strong></td><td>تسجيل أوقات المشاركة الفعلية وتحديث Student 360.</td></tr>
+              <tr><td><strong>Observability</strong></td><td>تتوفر سجلات ومقاييس وتنبيهات وخطة استجابة.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>خارطة الطريق التقديرية</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المرحلة</th>
+                <th>المدة التقديرية</th>
+                <th>المخرج</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>تصميم UX و SRS</strong></td><td>أسبوع</td><td>شاشات ومواصفات معتمدة</td></tr>
+              <tr><td><strong>Database & Backend</strong></td><td>أسبوعان</td><td>الجداول وواجهات API</td></tr>
+              <tr><td><strong>LiveKit Integration</strong></td><td>أسبوعان</td><td>الاتصال والصلاحيات</td></tr>
+              <tr><td><strong>Web + Flutter</strong></td><td>3–4 أسابيع</td><td>فصول الويب والهاتف</td></tr>
+              <tr><td><strong>Recording & Storage</strong></td><td>أسبوع</td><td>التسجيلات المحمية</td></tr>
+              <tr><td><strong>Security & QA</strong></td><td>أسبوعان</td><td>اختبارات وتقارير</td></tr>
+              <tr><td><strong>Pilot</strong></td><td>أسبوع</td><td>إطلاق محدود ومراقب</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">المدد تقديرية لفريق يعمل بالتوازي وليست التزاماً زمنياً أو عرض سعر.</p>
+      </section>
+
+      <!-- Section 10 -->
+      <section class="doc-section" id="live-10">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">10</span>
+            <h2>التكاليف والامتثال والقرارات قبل الإنتاج</h2>
+          </div>
+          <span class="part-badge">Go-Live Gate</span>
+        </div>
+        <p><strong>الميزانية:</strong> أي أرقام في الدليل الأساسي تقديرية وليست عروض أسعار. يجب تحديثها وفق عدد المحاضرات المتزامنة، متوسط عدد الطلاب، ساعات الفيديو، جودة البث، التسجيل، التخزين، نقل البيانات، ومناطق الاستضافة.</p>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>محركات التكلفة</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>ساعات المشاركين المتزامنين واستهلاك WebRTC.</li>
+              <li>تسجيل المحاضرات ومعالجتها وتخزينها.</li>
+              <li>نقل البيانات و CDN ومناطق TURN.</li>
+              <li>المراقبة والنسخ الاحتياطي والدعم الفني.</li>
+              <li>تراخيص الخدمات الخارجية ومزودي AI.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>الامتثال والقانون</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>مراجعة قانون حماية البيانات الشخصية المصري 151 / 2020 ومتطلباته التنفيذية مع مختص.</li>
+              <li>مراجعة قانون حماية المستهلك 181 / 2018 وسياسات الاشتراك والإلغاء والاسترداد.</li>
+              <li>التحقق من حقوق استخدام المحتوى والتسجيلات ومشاركة الشاشة والمواد التعليمية.</li>
+              <li>تحديد سياسة موافقات التسجيل والاحتفاظ والحذف وطلبات أصحاب البيانات.</li>
+              <li>التأكد من العقود وشروط مزود البث والتخزين ونقل البيانات عبر الحدود.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout danger">
+          <strong>قرار الإطلاق:</strong> لا يتم تشغيل محاضرات حقيقية أو جمع تسجيلات طلاب قبل إتمام مراجعة الخصوصية والعقود والصلاحيات واختبار الحماية. لا تخزن بيانات وجه خام أو قوالب بيومترية ما لم توجد ضرورة قانونية وموافقة وضوابط مناسبة.
+        </div>
+      </section>
+
+
+      <!-- =========================================================
+           PART 2: COMPREHENSIVE EXECUTIVE GUIDE (25 PAGES)
+           ========================================================= -->
+      <div class="part-banner" id="guide-intro">
+        <h2>الجزء الثاني: الدليل التنفيذي الشامل لبناء المنصة وإطلاقها وتشغيلها</h2>
+        <p style="margin:0; color:#cbd5e1;">نسخة المحتوى الداخلي – الغلاف واللوجو يضافان لاحقًا بواسطة صاحب المشروع | الإصدار 1.0 – 22 نوفمبر 2026</p>
+      </div>
+
+      <section class="doc-section">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">00</span>
+            <h2>بيانات الدليل وطريقة الاستخدام وخريطة الأقسام</h2>
+          </div>
+          <span class="part-badge">الدليل التنفيذي 1/25</span>
+        </div>
+        <p><strong>هدف الوثيقة:</strong> تحويل <strong>Devsphere Code</strong> إلى منتج رقمي قابل للبناء والاختبار والإطلاق والإدارة، مع تحديد المسؤوليات والمخرجات والمخاطر والتكاليف. هذه خطة تنفيذية وليست ادعاءً بأن الوظائف نفذت بالفعل.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>البند</th>
+                <th>القيمة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>المشروع</strong></td><td>Devsphere Code</td></tr>
+              <tr><td><strong>الشركة</strong></td><td>Devsphere International</td></tr>
+              <tr><td><strong>المطور</strong></td><td>Mahmoud Eltbakh</td></tr>
+              <tr><td><strong>المسمى</strong></td><td>Software Developer & Project Architect</td></tr>
+              <tr><td><strong>النطاق الأساسي</strong></td><td>مصر مع قابلية توسع دولي بعد مراجعة القوانين</td></tr>
+              <tr><td><strong>حالة المستند</strong></td><td>مرجع تخطيطي يحتاج اعتمادًا مالياً وقانونياً قبل التشغيل</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>طريقة استخدام الدليل</h3>
+        <ul class="styled-list">
+          <li>الإدارة تعتمد النطاق والميزانية وبوابات الاستلام.</li>
+          <li>مدير المشروع يحول كل بند إلى مهمة ومسؤول وموعد ومعيار قبول.</li>
+          <li>الفريق التقني يوثق القرارات والتغييرات والاختبارات.</li>
+          <li>المحاسب والمحامي يراجعان الضرائب والعقود والامتثال.</li>
+          <li>كل الأرقام المالية تقديرية وليست عروض أسعار أو التزاماً ضريبياً.</li>
+        </ul>
+
+        <h3>فهرس الأقسام وخريطة التنفيذ</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>القسم</th>
+                <th>الموضوع</th>
+                <th>المخرج</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>01</strong></td><td>الرؤية ونموذج العمل</td><td>أهداف ومؤشرات نجاح</td></tr>
+              <tr><td><strong>02</strong></td><td>المتطلبات وتجربة المستخدم</td><td>SRS ورحلات المستخدم</td></tr>
+              <tr><td><strong>03</strong></td><td>المعمارية والأدوات</td><td>قرارات تقنية وبيئة تطوير</td></tr>
+              <tr><td><strong>04</strong></td><td>التطوير من أول كود</td><td>مستودع وخدمات واختبارات</td></tr>
+              <tr><td><strong>05</strong></td><td>الذكاء الاصطناعي</td><td>سير عمل وبرومبتات ومراجعة</td></tr>
+              <tr><td><strong>06</strong></td><td>قاعدة البيانات و API</td><td>ERD و API وعقود تكامل</td></tr>
+              <tr><td><strong>07</strong></td><td>وحدات المنصة</td><td>LMS وامتحانات وتقارير</td></tr>
+              <tr><td><strong>08</strong></td><td>الأمن والخصوصية</td><td>ضوابط أمن وبيانات</td></tr>
+              <tr><td><strong>09</strong></td><td>الدفع والمالية</td><td>دورة دفع وتسوية</td></tr>
+              <tr><td><strong>10</strong></td><td>القانون والضرائب</td><td>قائمة امتثال</td></tr>
+              <tr><td><strong>11</strong></td><td>الاختبار والنشر</td><td>تقارير قبول وإطلاق</td></tr>
+              <tr><td><strong>12 / 13</strong></td><td>الميزانية والأرباح</td><td>نماذج مالية</td></tr>
+              <tr><td><strong>14 / 15</strong></td><td>الإدارة والتشغيل</td><td>حوكمة ومؤشرات</td></tr>
+              <tr><td><strong>ملاحق</strong></td><td>قوالب ومراجع</td><td>مواد قابلة للنسخ</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Guide 01 -->
+      <section class="doc-section" id="guide-01">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">01</span>
+            <h2>الرؤية ونموذج العمل</h2>
+          </div>
+          <span class="part-badge">3 / 25</span>
+        </div>
+        <p>منصة تعليم لغات رقمية تبدأ بالإنجليزية وقابلة لإضافة الألمانية والتركية، وتجمع إدارة الكورسات والمحتوى والفصول المباشرة والامتحانات وتقارير الطلاب والمكتبة والمجتمع والمساعد الذكي.</p>
+
+        <h3>أهداف العمل</h3>
+        <ul class="styled-list">
+          <li>زيادة التسجيلات المدفوعة وتحسين تحويل الزائر إلى طالب.</li>
+          <li>رفع إكمال الكورسات ونتائج التعلم المقاسة.</li>
+          <li>توفير أدوات للمدرس والإدارة تقلل العمل اليدوي.</li>
+          <li>بناء منصة قابلة للتوسع إلى أكثر من أكاديمية (Multi-tenant).</li>
+          <li>إنشاء إيراد مستدام وقياس تكلفة اكتساب العميل والاحتفاظ به.</li>
+        </ul>
+
+        <h3>نماذج العمل</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>النموذج</th>
+                <th>الآلية</th>
+                <th>الإيراد</th>
+                <th>التحدي</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Direct Academy</strong></td><td>الأكاديمية تبيع كورساتها</td><td>قيمة الكورس والاشتراك</td><td>تكلفة المحتوى والتسويق</td></tr>
+              <tr><td><strong>Marketplace</strong></td><td>مدرسون يبيعون عبر المنصة</td><td>عمولة ورسوم معلنة</td><td>جودة المحتوى والاسترداد</td></tr>
+              <tr><td><strong>Hybrid</strong></td><td>الجمع بين النموذجين</td><td>مبيعات مباشرة وعمولات</td><td>فصل الحسابات والتسويات</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout success">
+          <strong>التوصية:</strong> ابدأ ببيع كورسات الأكاديمية، مع تصميم تقني يسمح بإضافة Marketplace لاحقًا بعد ضبط العقود والعمولات والاسترداد وحقوق المحتوى.
+        </div>
+      </section>
+
+      <!-- Guide 02 -->
+      <section class="doc-section" id="guide-02">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">02</span>
+            <h2>المتطلبات وتجربة المستخدم (SRS)</h2>
+          </div>
+          <span class="part-badge">4 / 25</span>
+        </div>
+        <p><strong>وثيقة SRS:</strong> وثيقة Software Requirements Specification تحدد ما يجب أن يفعله النظام وما هو خارج النطاق. كل ميزة يجب أن تشمل الوصف والمستخدم والشروط السابقة والمسار الطبيعي والاستثناءات والصلاحيات والبيانات ومعايير القبول.</p>
+
+        <h3>الأدوار والصلاحيات</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الدور</th>
+                <th>الصلاحيات الأساسية</th>
+                <th>الحدود</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Student</strong></td><td>شراء وتعلم وامتحان وتقارير</td><td>بياناته فقط</td></tr>
+              <tr><td><strong>Teacher</strong></td><td>إدارة كورساته ودروسه وامتحاناته</td><td>طلاب كورساته فقط</td></tr>
+              <tr><td><strong>Admin</strong></td><td>إدارة ودعم وتقارير</td><td>حسب Permission Matrix</td></tr>
+              <tr><td><strong>Owner</strong></td><td>إدارة عليا ومؤشرات</td><td>صلاحيات موثقة</td></tr>
+              <tr><td><strong>Super Admin</strong></td><td>إدارة المنصة والمستأجرين</td><td>وصول مراقب ومسجل</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>التسجيل (Registration)</h3>
+        <ul class="styled-list">
+          <li><strong>الطالب:</strong> الاسم، الهاتف، البريد، كلمة المرور، البلد، اللغة، المستوى، الهدف، والموافقات.</li>
+          <li><strong>المدرس:</strong> بيانات مهنية وتخصصات وخبرة ومؤهلات ومراجعة قبل النشر.</li>
+          <li><strong>الحسابات الإدارية:</strong> ينشئها مستخدم مخول لا يختارها المستخدم العادي.</li>
+          <li><strong>التحقق والأمان:</strong> تحقق الهاتف / البريد واستعادة كلمة المرور وإدارة الجلسات و MFA للحسابات الحساسة.</li>
+        </ul>
+
+        <h3>رحلات المستخدم (User Journeys)</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الرحلة</th>
+                <th>المسار</th>
+                <th>مؤشر النجاح</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>التسجيل</strong></td><td>زيارة ← حساب ← تحقق ← تحديد مستوى</td><td>إكمال التسجيل</td></tr>
+              <tr><td><strong>الشراء</strong></td><td>اختيار ← شروط وسعر ← دفع ← تأكيد خادمي</td><td>نجاح الدفع</td></tr>
+              <tr><td><strong>التعلم</strong></td><td>لوحة ← درس ← اختبار ← حفظ تقدم</td><td>إكمال الكورس</td></tr>
+              <tr><td><strong>الدعم</strong></td><td>مساعدة ← AI / موظف ← تذكرة</td><td>زمن الحل ورضا المستخدم</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Guide 03 -->
+      <section class="doc-section" id="guide-03">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">03</span>
+            <h2>المعمارية التقنية والأدوات</h2>
+          </div>
+          <span class="part-badge">5 / 25</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المجال</th>
+                <th>الاختيار المعتمد</th>
+                <th>السبب</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Web</strong></td><td>Next.js + TypeScript</td><td>واجهة حديثة و SEO و RTL</td></tr>
+              <tr><td><strong>Backend</strong></td><td>NestJS + TypeScript</td><td>هيكل وحدات واختبارات</td></tr>
+              <tr><td><strong>Database</strong></td><td>PostgreSQL</td><td>معاملات وعلاقات وتقارير</td></tr>
+              <tr><td><strong>Cache/Queue</strong></td><td>Redis + Queue Worker</td><td>تسريع ومهام خلفية</td></tr>
+              <tr><td><strong>Mobile</strong></td><td>Flutter Android + iOS</td><td>قاعدة تطبيق واحدة</td></tr>
+              <tr><td><strong>Architecture</strong></td><td>Modular Monolith</td><td>بساطة قبل Microservices</td></tr>
+              <tr><td><strong>AI</strong></td><td>Hybrid AI + RAG</td><td>قاعدة معرفة و API خارجي</td></tr>
+              <tr><td><strong>Face</strong></td><td>مزود خارجي اختياري</td><td>تجنب بناء تعرف وجوه داخلي</td></tr>
+              <tr><td><strong>API</strong></td><td>REST + OpenAPI</td><td>تكامل موثق</td></tr>
+              <tr><td><strong>Storage</strong></td><td>S3-compatible</td><td>ملفات قابلة للتوسع</td></tr>
+              <tr><td><strong>Deployment</strong></td><td>Docker + CI/CD</td><td>بناء ونشر قابلان للتكرار</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>الأدوات حسب المهمة</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المهمة</th>
+                <th>أدوات مناسبة</th>
+                <th>الاستخدام</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>تصميم</strong></td><td>Figma</td><td>Wireframes و Design System</td></tr>
+              <tr><td><strong>كود</strong></td><td>VS Code / JetBrains</td><td>تطوير وتصحيح</td></tr>
+              <tr><td><strong>مستودع</strong></td><td>GitHub / GitLab</td><td>Version Control و Pull Requests</td></tr>
+              <tr><td><strong>مهام</strong></td><td>Jira / Linear / Trello</td><td>Sprints و Backlog</td></tr>
+              <tr><td><strong>توثيق</strong></td><td>Notion / Confluence / Markdown</td><td>قرارات و Runbooks</td></tr>
+              <tr><td><strong>API</strong></td><td>Postman / Bruno</td><td>اختبار الطلبات</td></tr>
+              <tr><td><strong>E2E</strong></td><td>Playwright</td><td>اختبار رحلات الويب</td></tr>
+              <tr><td><strong>مراقبة</strong></td><td>Sentry / OpenTelemetry</td><td>أخطاء وأداء</td></tr>
+              <tr><td><strong>أداء</strong></td><td>k6</td><td>اختبار حمل وقياس السعة</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>تنبيه اختيار الأدوات:</strong> لا تشتر كل الأدوات من البداية. قارن السعر، مكان تخزين البيانات، حدود الاستخدام، SLA، دعم مصر، وإمكانية تصدير البيانات قبل التعاقد.
+        </div>
+      </section>
+
+      <!-- Guide 04 -->
+      <section class="doc-section" id="guide-04">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">04</span>
+            <h2>التطوير من أول حرف كود</h2>
+          </div>
+          <span class="part-badge">6 / 25</span>
+        </div>
+
+        <h3>قبل البرمجة</h3>
+        <ul class="styled-list">
+          <li>تثبيت نطاق MVP وما يؤجل للإصدارات اللاحقة.</li>
+          <li>إنشاء Repository خاص وقواعد الفروع ومراجعة Pull Request.</li>
+          <li>إعداد بيئات Development و Staging و Production.</li>
+          <li>تثبيت إصدارات Node و Flutter ومدير الحزم.</li>
+          <li>إعداد Lint و Format و Type Check و Unit Tests.</li>
+          <li>كتابة README يشرح التشغيل والمتغيرات والاختبارات.</li>
+        </ul>
+
+        <h3>مراحل البناء (12 خطوة)</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الخطوة</th>
+                <th>التنفيذ</th>
+                <th>شرط الانتقال</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1</strong></td><td>Monorepo و CI</td><td>Build ناجح</td></tr>
+              <tr><td><strong>2</strong></td><td>Design System و RTL</td><td>مراجعة الشاشات</td></tr>
+              <tr><td><strong>3</strong></td><td>Authentication و RBAC</td><td>اختبار الأدوار</td></tr>
+              <tr><td><strong>4</strong></td><td>Database و Core API</td><td>Migrations واختبارات</td></tr>
+              <tr><td><strong>5</strong></td><td>Courses و Lessons</td><td>إنشاء وعرض المحتوى</td></tr>
+              <tr><td><strong>6</strong></td><td>Payments و Enrollment</td><td>شراء تجريبي كامل</td></tr>
+              <tr><td><strong>7</strong></td><td>Learning Player</td><td>حفظ واستكمال التقدم</td></tr>
+              <tr><td><strong>8</strong></td><td>Exams و Reports</td><td>حفظ وتصحيح</td></tr>
+              <tr><td><strong>9</strong></td><td>Admin/Teacher</td><td>اختبار الصلاحيات</td></tr>
+              <tr><td><strong>10</strong></td><td>Flutter</td><td>اختبار أجهزة حقيقية</td></tr>
+              <tr><td><strong>11</strong></td><td>AI/Integrations</td><td>تقييم الجودة والتكلفة</td></tr>
+              <tr><td><strong>12</strong></td><td>Security/Release</td><td>قبول نهائي</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>سياسة الكود</h3>
+        <ul class="styled-list">
+          <li>لا تضع منطق الدفع أو الصلاحيات في الواجهة فقط.</li>
+          <li>كل تغيير قاعدة بيانات عبر Migration قابل للمراجعة.</li>
+          <li>لا ترفع مفاتيح API أو بيانات طلاب إلى Git.</li>
+          <li>كل Pull Request يشرح التغيير والمخاطر والاختبارات.</li>
+          <li>الميزة لا تعد منتهية إلا بعد اختبار وتوثيق وقبول.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 05 -->
+      <section class="doc-section" id="guide-05">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">05</span>
+            <h2>الذكاء الاصطناعي في التطوير</h2>
+          </div>
+          <span class="part-badge">7 / 25</span>
+        </div>
+        <p>يستخدم AI لتحليل المتطلبات واقتراح التصميم ومسودات الكود والاختبارات والتوثيق وتحليل السجلات بعد تنقيحها. لا يملك صلاحية نشر إنتاجي أو الوصول إلى بيانات حقيقية دون تفويض ومراجعة.</p>
+
+        <h3>سير العمل (AI Workflow)</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المرحلة</th>
+                <th>دور AI</th>
+                <th>مراجعة بشرية</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>تحليل</strong></td><td>User Stories وحالات قبول</td><td>مالك المنتج يعتمد</td></tr>
+              <tr><td><strong>تصميم</strong></td><td>ERD و API مقترحة</td><td>مهندس معماري يراجع</td></tr>
+              <tr><td><strong>برمجة</strong></td><td>مسودات كود</td><td>المطور يراجع</td></tr>
+              <tr><td><strong>اختبار</strong></td><td>اقتراح Test Cases</td><td>QA يتحقق</td></tr>
+              <tr><td><strong>Debug</strong></td><td>تحليل Stack Trace منقح</td><td>إعادة إنتاج المشكلة</td></tr>
+              <tr><td><strong>توثيق</strong></td><td>README و API Docs</td><td>مسؤول الوحدة يراجع</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>ضوابط استخدام AI</h3>
+        <ul class="styled-list">
+          <li>لا ترفع أسراراً أو بيانات شخصية حقيقية لأداة عامة.</li>
+          <li>راجع شروط الخصوصية والاحتفاظ والتدريب لكل أداة.</li>
+          <li>اطلب قائمة الملفات المعدلة والاختبارات المنفذة.</li>
+          <li>لا تقبل كوداً لا يفهمه الفريق.</li>
+          <li>أي نصيحة أمنية أو قانونية أو مالية تحتاج مختصاً.</li>
+        </ul>
+
+        <h3>برومبت تطوير رئيسي قابل للنسخ</h3>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Master Development Prompt (Arabic)</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ البرومبت</button>
+          </div>
+          <pre style="direction:rtl; text-align:right; font-family:'Cairo', sans-serif;">أنت مهندس برمجيات ضمن Devsphere Code. افحص المشروع أولاً ولا تفترض وجود ميزة غير متحققة. قبل التعديل لخص فهمك والملفات المتأثرة والمخاطر وخطة الاختبار. نفّذ أصغر تغيير مكتمل وفق Modular Monolith و TypeScript strict. لا تضع أسراراً ولا تتجاوز الصلاحيات ولا تستخدم بيانات شخصية حقيقية. أضف الاختبارات والتوثيق وشغل lint و typecheck و tests، وقدم تقريراً يوضح ما نفذ وما لم ينفذ والمتطلبات الخارجية. لا تدع نجاح تكامل أو نشر دون دليل قابل للتحقق.</pre>
+        </div>
+
+        <h3>برومبتات فرعية</h3>
+        <ul class="styled-list">
+          <li><strong>تحليل ميزة:</strong> حوّل الوصف إلى User Stories وحالات قبول وحالات فشل وصلاحيات واختبارات.</li>
+          <li><strong>مراجعة كود:</strong> ابحث عن أخطاء منطقية وثغرات صلاحيات وتسريب بيانات ومشكلات أداء.</li>
+          <li><strong>اختبارات:</strong> غط المسار الطبيعي والحدود والأخطاء والتزامن وتكرار الطلبات.</li>
+          <li><strong>أداء:</strong> حدد عنق الزجاجة بدليل واقترح تغييراً قابلاً للقياس.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 06 -->
+      <section class="doc-section" id="guide-06">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">06</span>
+            <h2>قاعدة البيانات وواجهات API</h2>
+          </div>
+          <span class="part-badge">8 / 25</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المجموعة</th>
+                <th>الجداول المقترحة</th>
+                <th>الضوابط</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Identity</strong></td><td><code>users, roles, permissions, sessions</code></td><td>RBAC</td></tr>
+              <tr><td><strong>Tenancy</strong></td><td><code>tenants, tenant_settings</code></td><td>عزل المستأجر</td></tr>
+              <tr><td><strong>Learning</strong></td><td><code>courses, lessons, enrollments</code></td><td>صلاحية الاشتراك</td></tr>
+              <tr><td><strong>Media</strong></td><td><code>media_assets, video_progress</code></td><td>روابط مؤقتة</td></tr>
+              <tr><td><strong>Assessment</strong></td><td><code>exams, questions, attempts, answers</code></td><td>حفظ تلقائي</td></tr>
+              <tr><td><strong>Payments</strong></td><td><code>orders, transactions, refunds</code></td><td>سجل مالي</td></tr>
+              <tr><td><strong>Analytics</strong></td><td><code>student_progress_snapshots, skill_assessments</code></td><td>مصدر وتاريخ</td></tr>
+              <tr><td><strong>AI</strong></td><td><code>ai_conversations, retrieval_sources</code></td><td>تقليل البيانات</td></tr>
+              <tr><td><strong>Support</strong></td><td><code>tickets, messages</code></td><td>SLA</td></tr>
+              <tr><td><strong>Audit</strong></td><td><code>audit_logs, security_events</code></td><td>سجل تدقيق</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>قواعد قاعدة البيانات و API</h3>
+        <ul class="styled-list">
+          <li>كل سجل تابع لأكاديمية يحمل <code>tenant_id</code> ويتحقق الخادم من المستأجر من الجلسة.</li>
+          <li>لا تثق في <code>tenant_id</code> المرسل من المتصفح.</li>
+          <li>استخدم Foreign Keys و Unique و Check Constraints وفهارس حسب الاستخدام.</li>
+          <li>استخدم Transactions للشراء والتسجيل وتحديث المستحقات.</li>
+          <li>ضع سياسة Retention وحذف لكل نوع بيانات.</li>
+          <li><strong>API:</strong> استخدم REST بإصدار <code>/api/v1/</code> وتوثيق OpenAPI و DTO Validation و Pagination و Idempotency و Rate Limiting. يجب أن تكون الأخطاء موحدة وآمنة وتحمل Trace ID.</li>
+        </ul>
+
+        <h3>التكاملات الخارجية</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>التكامل</th>
+                <th>الخطة</th>
+                <th>شرط الاعتماد</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Kashier</strong></td><td>مرشح أساسي</td><td>عقد تاجر ورسوم و Webhook مؤكدة</td></tr>
+              <tr><td><strong>Fawry Pay</strong></td><td>تكامل إضافي عند الحاجة</td><td>تأكيد التوافر والرسوم</td></tr>
+              <tr><td><strong>Zoom/Teams</strong></td><td>فصول مباشرة</td><td>API وصلاحيات رسمية</td></tr>
+              <tr><td><strong>Face Provider</strong></td><td>اختياري</td><td>مراجعة قانونية وبديل يدوي</td></tr>
+              <tr><td><strong>YouTube</strong></td><td>عرض محتوى مسموح</td><td>سياسات API وحقوق النشر</td></tr>
+              <tr><td><strong>Email/SMS</strong></td><td>إشعارات</td><td>اتفاق معالجة بيانات</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Guide 07 -->
+      <section class="doc-section" id="guide-07">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">07</span>
+            <h2>وحدات Devsphere Code</h2>
+          </div>
+          <span class="part-badge">9 / 25</span>
+        </div>
+
+        <h3>LMS وإدارة التعلم</h3>
+        <ul class="styled-list">
+          <li>كتالوج حسب اللغة والمستوى والهدف.</li>
+          <li>وحدات ودروس وملفات ومواد صوتية وفيديو.</li>
+          <li>تسجيل الطلاب ومتابعة التقدم وإدارة المدرسين.</li>
+          <li>إتاحة المحتوى حسب الاشتراك والمدة والصلاحية.</li>
+        </ul>
+
+        <h3>Devsphere Code STUDENT 360</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المحور</th>
+                <th>البيانات</th>
+                <th>الضابط</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>أكاديمي</strong></td><td>المستوى والكورسات والدروس والدرجات</td><td>مصدر وتاريخ تحديث</td></tr>
+              <tr><td><strong>المهارات</strong></td><td>Reading / Writing / Listening / Speaking / Grammar / Vocabulary</td><td>لا تقييم بلا قياس</td></tr>
+              <tr><td><strong>الحضور</strong></td><td>الجلسات والتأخر والغياب</td><td>مشاهدة الفيديو ليست حضوراً</td></tr>
+              <tr><td><strong>الامتحانات</strong></td><td>المحاولات والأخطاء</td><td>إتاحة مراجعة بشرية</td></tr>
+              <tr><td><strong>AI</strong></td><td>الأسئلة والتوصيات</td><td>توضيح أنها اقتراحات</td></tr>
+              <tr><td><strong>مالي</strong></td><td>المشتريات والفواتير والاسترداد</td><td>للمخولين فقط</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>الامتحانات و LIVE والمكتبة والمجتمع</h3>
+        <ul class="styled-list">
+          <li><strong>الامتحانات:</strong> MCQ و True/False و Matching و Fill blanks و Essay و Listening و Reading. وقت ودرجات ونجاح ومحاولات وتلميحات وتحذيرات وسياسة إنهاء. حفظ تلقائي ومزامنة آمنة عند عودة الاتصال. فقدان التركيز لا يثبت الغش وحده. تصحيح آلي للموضوعي و AI-assisted grading للأسئلة المفتوحة مع Rubric ومراجعة بشرية.</li>
+          <li><strong>Devsphere Code LIVE:</strong> لجدولة المحاضرات والتسجيل والإشعارات مع Zoom/Teams.</li>
+          <li><strong>YouTube API:</strong> لعرض المحتوى المسموح دون نسخ غير مرخص.</li>
+          <li><strong>Devsphere Code Library:</strong> للكتب والملخصات والملفات بصلاحيات وترخيص.</li>
+          <li><strong>Devsphere Code Ask:</strong> لسؤال الطالب وإجابة AI من قاعدة معرفة وتحويل للمدرس عند ضعف الثقة.</li>
+          <li><strong>المجتمع:</strong> Shorts وشارات ومكافآت تعليمية غير مالية وتجارب طلاب بموافقات مناسبة.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 08 -->
+      <section class="doc-section" id="guide-08">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">08</span>
+            <h2>الأمن والخصوصية</h2>
+          </div>
+          <span class="part-badge">10 / 25</span>
+        </div>
+
+        <h3>مبادئ الأمن</h3>
+        <ul class="styled-list">
+          <li><strong>Least Privilege:</strong> أقل صلاحية لازمة.</li>
+          <li><strong>Defense in Depth:</strong> طبقات حماية متعددة.</li>
+          <li>تشفير النقل والتخزين.</li>
+          <li><strong>Secrets Management:</strong> خارج مستودع الكود.</li>
+          <li><strong>Secure SDLC:</strong> ومراجعة أمنية مستمرة.</li>
+          <li>نسخ احتياطية مشفرة واختبار استعادة.</li>
+        </ul>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المجال</th>
+                <th>الضابط</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>الدخول</strong></td><td>MFA للحسابات الحساسة وإدارة جلسات</td></tr>
+              <tr><td><strong>الصلاحيات</strong></td><td>RBAC وفحص كل طلب على الخادم</td></tr>
+              <tr><td><strong>API</strong></td><td>Validation و Rate Limit وحماية replay</td></tr>
+              <tr><td><strong>Database</strong></td><td>شبكة خاصة وحسابات أقل صلاحية</td></tr>
+              <tr><td><strong>Files</strong></td><td>فحص ملفات وروابط مؤقتة وحدود حجم</td></tr>
+              <tr><td><strong>Monitoring</strong></td><td>Logs منقحة وتنبيهات</td></tr>
+              <tr><td><strong>Dependencies</strong></td><td>فحص ثغرات وتحديثات</td></tr>
+              <tr><td><strong>Backups</strong></td><td>RPO/RTO واختبار استعادة</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>الطلاب والقصر والوجه + الاستجابة للحوادث</h3>
+        <ul class="styled-list">
+          <li>اجمع الحد الأدنى من البيانات وحدد الغرض والأساس القانوني والاحتفاظ.</li>
+          <li>وفّر إشعار خصوصية واضحاً ووسيلة لممارسة الحقوق، وتحقق من متطلبات موافقة ولي الأمر حيث تنطبق.</li>
+          <li>التحقق بالوجه اختياري قدر الإمكان مع بديل يدوي. لا تخزن صور الوجه أو القوالب البيومترية إلا بعد تقييم قانوني وضرورة وموافقات وتصاريح لازمة، ولا تستخدم الوجه للمراقبة المستمرة أو قرار عقابي آلي.</li>
+          <li><strong>الاستجابة للحوادث:</strong> خطة Incident Response تشمل التصنيف والاحتواء وحفظ الأدلة وتقييم النطاق والإخطار عند وجوبه والاستعادة وتحليل السبب ومنع التكرار. يحدد المختص المواعيد القانونية.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 09 -->
+      <section class="doc-section" id="guide-09">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">09</span>
+            <h2>الدفع والمالية</h2>
+          </div>
+          <span class="part-badge">11 / 25</span>
+        </div>
+
+        <div class="callout">
+          <strong>دورة الدفع:</strong> إنشاء Order على الخادم ← Payment Session ← تنفيذ الدفع ← Webhook موقع ← تحقق من التوقيع والمبلغ والعملة والطلب ← تحديث الحالة داخل Transaction ← تفعيل الكورس ← مستند ضريبي حسب النظام.
+        </div>
+
+        <h3>قواعد الدفع والإدارة المالية</h3>
+        <ul class="styled-list">
+          <li>لا تفعّل الكورس اعتماداً على صفحة نجاح المتصفح وحدها؛ تحقق من Webhook server-to-server والتوقيع والمبلغ والعملة، واستخدم Idempotency لمنع التكرار.</li>
+          <li><strong>حالات الدفع:</strong> Pending و Processing و Paid و Failed و Cancelled و Refunded و Partially Refunded.</li>
+          <li>نفّذ Reconciliation بين المنصة والمزود والبنك، ولا تخزن بيانات البطاقة الحساسة.</li>
+          <li><strong>مزود الدفع:</strong> Kashier مرشح أساسي مبدئياً، و Fawry Pay تكامل إضافي إذا لم تتوفر وسيلة فوري المطلوبة لدى المزود الأساسي. يجب تأكيد وسائل الدفع والرسوم والتسوية والاعتراضات كتابة. (وثائق Kashier: <code>https://developers.kashier.io/docs/accept-payments</code> | الأسعار: <code>https://www.kashier.io/pricing</code>)</li>
+          <li><strong>إدارة مالية:</strong> افصل الإيراد الإجمالي عن صافي التحصيل والرسوم والعمولات والخصومات والضرائب. سجل كل Refund و Chargeback و Settlement. أنشئ كشفاً لكل مدرس في Marketplace. تتبع Gross Sales و Net Revenue و Payment Success Rate و Refund Rate. لا تخلط مستحقات المدرسين بأموال الأكاديمية دون Ledger واضح.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 10 -->
+      <section class="doc-section" id="guide-10">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">10</span>
+            <h2>الضرائب والقانون وحماية المستهلك وحقوق النشر</h2>
+          </div>
+          <span class="part-badge">12–13 / 25</span>
+        </div>
+        <div class="callout warning">
+          هذا القسم إطار امتثال وليس استشارة قانونية أو ضريبية. التطبيق يتوقف على الكيان القانوني وطبيعة الخدمة والتعاقد والتسجيل الضريبي. راجع محاسباً ومحامياً مصريين قبل البيع.
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>ضريبة القيمة المضافة (VAT)</h4>
+            <p style="font-size:0.9rem; margin:0;">قانون VAT رقم 67 لسنة 2016 يقرر معدلاً عاماً <strong>14%</strong> مع إعفاءات واستثناءات. توجد معاملة خاصة لبعض الخدمات التعليمية، لكن لا تفترض أن كل اشتراك أو رسوم تسجيل أو شهادة أو خدمة تقنية أو عمولة Marketplace معفاة تلقائياً. صنف كل بند تعاقدي مع المحاسب.</p>
+          </div>
+          <div class="mini-card">
+            <h4>ضريبة دخل الشركات</h4>
+            <p style="font-size:0.9rem; margin:0;">المعدل العام المنشور <strong>22.5%</strong> من صافي الربح الضريبي، وليس إجمالي المبيعات. يجب مراجعة المصروفات المقبولة والتعديلات القانونية. شهد 2026 تعديلات ضريبية؛ تحقق من النصوص الأحدث قبل اعتماد الحساب.</p>
+          </div>
+          <div class="mini-card">
+            <h4>الفاتورة والإيصال الإلكتروني</h4>
+            <p style="font-size:0.9rem; margin:0;">حدد انطباق منظومة الفاتورة الإلكترونية أو الإيصال الإلكتروني على الكيان والمعاملات، والربط عند اللزوم. إيصال بوابة الدفع ليس بديلاً تلقائياً عن المستند الضريبي.</p>
+          </div>
+        </div>
+
+        <h3>حماية المستهلك وحماية البيانات الشخصية</h3>
+        <ul class="styled-list">
+          <li><strong>حماية المستهلك (قانون 181/2018):</strong> إظهار مقدم الخدمة ووسائل التواصل والبيانات القانونية، وصف الكورس والمستوى والمدة والمحتوى ومتطلبات الاستخدام قبل الشراء، إظهار السعر النهائي والضرائب والرسوم والتجديد التلقائي قبل الدفع، سياسة استرداد وإلغاء متوافقة مع القانون ولائحته، عدم تقديم ضمانات نجاح أو توظيف بلا سند، قناة شكاوى وتأكيد استلام ورقم متابعة، وعدم إخفاء الشروط الجوهرية.</li>
+          <li><strong>حماية البيانات الشخصية:</strong> القانون <strong>151/2020</strong> واللائحة التنفيذية <strong>816/2025</strong> مرجعان أساسيان. راجع متطلبات الترخيص والتصريح والسجلات ومسؤول حماية البيانات ونقل البيانات عبر الحدود والبيانات الحساسة وبيانات الأطفال.</li>
+        </ul>
+
+        <h3>حقوق النشر والعقود المطلوبة</h3>
+        <ul class="styled-list">
+          <li>قانون الملكية الفكرية المصري <strong>82/2002</strong> المعدل يحمي حقوق المؤلف والبرمجيات والمصنفات والعلامات. لا تستخدم كتباً أو أفلاماً أو صوراً أو موسيقى أو فيديوهات دون إذن أو ترخيص.</li>
+          <li>عقود المدرسين تحدد ملكية الدروس والملفات والتسجيلات وحق الاستخدام ومدته. عقد المطور يحدد ملكية Repository و Source Code و Design Assets و Documentation. أنشئ سجل أصول IP: المالك، المصدر، الترخيص، النطاق، وتاريخ الانتهاء.</li>
+          <li><strong>العقود المطلوبة:</strong> Terms of Service و Privacy Policy و Refund Policy | Instructor Agreement و Data Processing Agreement | عقد تطوير وصيانة ونقل ملكية الكود | اتفاقيات ترخيص المحتوى والوسائط | سياسة حماية القُصّر والإبلاغ والإشراف.</li>
+        </ul>
+      </section>
+
+      <!-- Guide 11 -->
+      <section class="doc-section" id="guide-11">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">11</span>
+            <h2>الاختبار وضمان الجودة</h2>
+          </div>
+          <span class="part-badge">14 / 25</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>نوع الاختبار</th>
+                <th>الهدف</th>
+                <th>الطريقة / الأداة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Unit</strong></td><td>اختبار دوال منفردة</td><td>Jest / Vitest</td></tr>
+              <tr><td><strong>Integration</strong></td><td>تفاعل الخدمات والبيانات</td><td>API و Test DB</td></tr>
+              <tr><td><strong>E2E</strong></td><td>رحلات المستخدم</td><td>Playwright</td></tr>
+              <tr><td><strong>Security</strong></td><td>ثغرات وصلاحيات</td><td>SAST و Pentest</td></tr>
+              <tr><td><strong>Performance</strong></td><td>حمل وتزامن</td><td>k6</td></tr>
+              <tr><td><strong>Accessibility</strong></td><td>قابلية الوصول</td><td>مراجعة آلية ويدوية</td></tr>
+              <tr><td><strong>UAT</strong></td><td>قبول الإدارة والمستخدمين</td><td>سيناريوهات موقعة</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>سيناريوهات حرجة</h3>
+        <ul class="styled-list">
+          <li>تسجيل وشراء وفشل ثم إعادة محاولة دون تكرار طلب.</li>
+          <li>Webhook مكرر أو غير صحيح لا يفعل اشتراكاً.</li>
+          <li>مدرس يصل إلى طالب خارج كورساته فيرفض.</li>
+          <li>Tenant B لا يصل إلى بيانات Tenant A.</li>
+          <li>انقطاع أثناء امتحان لا يفقد الإجابات المحفوظة.</li>
+          <li>استعادة Backup تثبت سلامة البيانات.</li>
+          <li>Refund ينعكس في الطلب والتقارير المالية.</li>
+        </ul>
+        <div class="callout danger">
+          لا إطلاق مع ثغرة Critical أو High غير معالجة، أو خلل دفع واسترداد، أو عزل مستأجرين، أو فقد بيانات، أو غياب النسخ الاحتياطي والسياسات.
+        </div>
+      </section>
+
+      <!-- Guide 12 -->
+      <section class="doc-section" id="guide-12">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">12</span>
+            <h2>النشر والتشغيل</h2>
+          </div>
+          <span class="part-badge">15 / 25</span>
+        </div>
+
+        <ul class="styled-list">
+          <li><strong>البيئات:</strong> Development (بيانات وهمية ومفاتيح Sandbox) | Staging (بيئة قريبة من الإنتاج لاختبار التكامل والقبول) | Production (بيانات حقيقية وصلاحيات مقيدة ومراقبة). لا تنسخ بيانات الإنتاج إلى التطوير دون إخفاء هوية وسياسة.</li>
+          <li><strong>CI/CD:</strong> Pull Request ← Lint / Typecheck / Tests / Security Scan ← Build ← Staging ← UAT ← موافقة Release Manager ← نشر تدريجي ← Smoke Tests ← مراقبة ← Rollback عند الفشل.</li>
+        </ul>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المكون</th>
+                <th>المطلوب</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Web/API</strong></td><td>Compute قابل للتوسع</td></tr>
+              <tr><td><strong>Database</strong></td><td>PostgreSQL managed ونسخ احتياطي</td></tr>
+              <tr><td><strong>Cache/Queue</strong></td><td>Redis ومراقبة</td></tr>
+              <tr><td><strong>Media</strong></td><td>Object Storage و CDN</td></tr>
+              <tr><td><strong>Video Streaming</strong></td><td>متخصص حسب ساعات المشاهدة</td></tr>
+              <tr><td><strong>Observability</strong></td><td>Logs / Metrics / Tracing</td></tr>
+              <tr><td><strong>Messaging</strong></td><td>Email / Push / SMS حسب الحاجة</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Pilot وخدمة العملاء</h3>
+        <p><strong>Pilot:</strong> ابدأ بمجموعة صغيرة من الطلاب والمدرسين وكورسات محدودة ودعم مباشر. راقب الدفع والتسجيل والفيديو والامتحانات والشكاوى ولا توسع الحمل قبل معالجة المشكلات.</p>
+        <p><strong>خدمة العملاء:</strong> مركز مساعدة عربي / إنجليزي، تذاكر برقم وحالة وأولوية و SLA داخلي، تصنيف (حساب، دفع، محتوى، امتحان، اتصال، وخصوصية)، تصعيد القضايا المالية والخصوصية والأمن، وقياس زمن أول رد وزمن الحل ورضا المستخدم.</p>
+      </section>
+
+      <!-- Guide 13 -->
+      <section class="doc-section" id="guide-13">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">13</span>
+            <h2>الميزانية ونسب التكلفة</h2>
+          </div>
+          <span class="part-badge">16–17 / 25</span>
+        </div>
+        <p>النطاقات التالية تقديرات تخطيطية بالجنيه المصري وليست عروض أسعار. تتغير حسب حجم الفريق والمحتوى والتكاملات والأمن ومزود الفيديو.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>البند</th>
+                <th>التكلفة التقديرية (ج.م)</th>
+                <th>النسبة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>تحليل وإدارة منتج</strong></td><td>25,000 - 45,000</td><td>7-9%</td></tr>
+              <tr><td><strong>UX/UI</strong></td><td>20,000 - 35,000</td><td>6-8%</td></tr>
+              <tr><td><strong>Backend/Database</strong></td><td>80,000 - 130,000</td><td>23-25%</td></tr>
+              <tr><td><strong>Web Frontend</strong></td><td>55,000 - 85,000</td><td>16-17%</td></tr>
+              <tr><td><strong>Flutter</strong></td><td>55,000 - 90,000</td><td>16-18%</td></tr>
+              <tr><td><strong>AI/Integrations</strong></td><td>25,000 - 45,000</td><td>7-9%</td></tr>
+              <tr><td><strong>QA/Security</strong></td><td>25,000 - 40,000</td><td>7-8%</td></tr>
+              <tr><td><strong>DevOps/Launch</strong></td><td>15,000 - 25,000</td><td>4-5%</td></tr>
+              <tr style="font-weight:800; background:rgba(37,99,235,0.1);"><td><strong>الإجمالي</strong></td><td><strong>300,000 - 495,000 جنيه</strong></td><td><strong>100%</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>احتياطي:</strong> خصص احتياطياً 10-20% للتغييرات والتأخير والتكاملات، ولا يصرف إلا بموافقة موثقة.</p>
+
+        <h3>التشغيل الشهري الأولي ونسب التكلفة</h3>
+        <div class="cards-grid">
+          <div class="table-responsive" style="margin:0;">
+            <table>
+              <thead>
+                <tr><th>البند</th><th>نطاق شهري</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>استضافة وقاعدة بيانات</td><td>2,000 - 7,000 جنيه</td></tr>
+                <tr><td>Storage/CDN/Video</td><td>1,000 - 6,000 جنيه</td></tr>
+                <tr><td>AI APIs</td><td>500 - 4,000 جنيه</td></tr>
+                <tr><td>Email/SMS/Notifications</td><td>300 - 2,000 جنيه</td></tr>
+                <tr><td>Monitoring/Tools</td><td>300 - 1,500 جنيه</td></tr>
+                <tr><td>صيانة ودعم</td><td>3,000 - 8,000 جنيه</td></tr>
+                <tr style="font-weight:800;"><td>الإجمالي المرجعي</td><td>7,100 - 28,500 جنيه</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-responsive" style="margin:0;">
+            <table>
+              <thead>
+                <tr><th>المؤشر</th><th>المعادلة الحسابية</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Payment Rate</strong></td><td>رسوم الدفع ÷ إجمالي المدفوعات</td></tr>
+                <tr><td><strong>Marketing Ratio</strong></td><td>التسويق ÷ صافي الإيراد</td></tr>
+                <tr><td><strong>Contribution Margin</strong></td><td>الإيراد بعد المتغير ÷ صافي الإيراد</td></tr>
+                <tr><td><strong>OPEX Ratio</strong></td><td>التشغيل الثابت ÷ صافي الإيراد</td></tr>
+                <tr><td><strong>Refund Rate</strong></td><td>قيمة الاسترداد ÷ المبيعات</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted); margin-top:8px;">هذه الأرقام لا تشمل التسويق والضرائب ورسوم الدفع، وقد تزيد مع نمو المستخدمين وساعات الفيديو.</p>
+      </section>
+
+      <!-- Guide 14 -->
+      <section class="doc-section" id="guide-14">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">14</span>
+            <h2>نماذج الأرباح والحسابات</h2>
+          </div>
+          <span class="part-badge">18–19 / 25</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="table-responsive" style="margin:0;">
+            <table>
+              <thead>
+                <tr><th colspan="2">النموذج الأول: بيع الأكاديمية المباشر</th></tr>
+                <tr><th>البند الشهري الافتراضي</th><th>القيمة</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>مبيعات (200 عملية × 750 جنيه)</td><td>150,000 جنيه</td></tr>
+                <tr><td>خصومات واستردادات 3%</td><td>4,500</td></tr>
+                <tr><td>صافي المبيعات</td><td>145,500</td></tr>
+                <tr><td>رسوم دفع افتراضية (2.75% + 3 جنيه/عملية)</td><td>4,725 تقريباً</td></tr>
+                <tr><td>مدرسون ومحتوى متغير 25%</td><td>36,375</td></tr>
+                <tr><td>تسويق</td><td>25,000</td></tr>
+                <tr><td>تشغيل ثابت</td><td>15,000</td></tr>
+                <tr><td>ربح تشغيلي قبل الضريبة</td><td>64,400</td></tr>
+                <tr><td>ضريبة دخل افتراضية 22.5%</td><td>14,490</td></tr>
+                <tr style="font-weight:800; color:var(--success);"><td>صافي تقريبي بعد الضريبة</td><td>49,910 جنيه</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="table-responsive" style="margin:0;">
+            <table>
+              <thead>
+                <tr><th colspan="2">النموذج الثاني: Marketplace بعمولة</th></tr>
+                <tr><th>البند الشهري الافتراضي</th><th>القيمة</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>إجمالي المبيعات GMV</td><td>300,000 جنيه</td></tr>
+                <tr><td>عمولة المنصة 20%</td><td>60,000</td></tr>
+                <tr><td>حصة المدرسين</td><td>240,000</td></tr>
+                <tr><td>رسوم دفع افتراضية (2.75% + 3 جنيه/عملية)</td><td>9,150</td></tr>
+                <tr><td>تسويق ودعم متغير</td><td>8,000</td></tr>
+                <tr><td>تشغيل ثابت</td><td>15,000</td></tr>
+                <tr><td>ربح تشغيلي قبل الضريبة</td><td>27,850</td></tr>
+                <tr><td>ضريبة دخل افتراضية 22.5%</td><td>6,266</td></tr>
+                <tr style="font-weight:800; color:var(--success);"><td>صافي تقريبي بعد الضريبة</td><td>21,584 جنيه</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <h3>المقارنة ونقطة التعادل</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المعيار</th>
+                <th>Direct Academy</th>
+                <th>Marketplace</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>الإيراد</strong></td><td>قيمة الكورس</td><td>العمولة والخدمات</td></tr>
+              <tr><td><strong>التحكم بالجودة</strong></td><td>أعلى</td><td>يتطلب اعتماد مدرسين</td></tr>
+              <tr><td><strong>تكلفة المحتوى</strong></td><td>على الأكاديمية</td><td>قد يتحملها المدرس</td></tr>
+              <tr><td><strong>التشغيل المالي</strong></td><td>أبسط</td><td>تسويات ومستحقات</td></tr>
+              <tr><td><strong>التوصية</strong></td><td>ابدأ به</td><td>أضفه بعد النضج</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout">
+          <strong>نقطة التعادل (Break-even):</strong> التكاليف الثابتة ÷ هامش المساهمة لكل عملية. مثال: 20,000 جنيه تكاليف ثابتة ÷ 400 جنيه مساهمة = <strong>50 عملية شهرياً</strong>. أعد الحساب بالبيانات الحقيقية. (يلزم Ledger يفصل GMV وحصة المدرس وعمولة المنصة والرسوم والضرائب).
+        </div>
+      </section>
+
+      <!-- Guide 15 -->
+      <section class="doc-section" id="guide-15">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">15</span>
+            <h2>الإدارة والحوكمة</h2>
+          </div>
+          <span class="part-badge">20 / 25</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المسؤول</th>
+                <th>المهام</th>
+                <th>المخرج</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Owner/Sponsor</strong></td><td>الرؤية والميزانية</td><td>اعتمادات</td></tr>
+              <tr><td><strong>Product Manager</strong></td><td>المتطلبات والأولويات</td><td>Backlog / Roadmap</td></tr>
+              <tr><td><strong>Project Manager</strong></td><td>الجدول والمخاطر</td><td>Status Report</td></tr>
+              <tr><td><strong>Tech Lead</strong></td><td>المعمارية ومراجعة الكود</td><td>ADRs</td></tr>
+              <tr><td><strong>Developers</strong></td><td>تنفيذ الوحدات</td><td>كود واختبارات</td></tr>
+              <tr><td><strong>Designer</strong></td><td>UI/UX</td><td>Design System</td></tr>
+              <tr><td><strong>QA</strong></td><td>الاختبار والقبول</td><td>Test Reports</td></tr>
+              <tr><td><strong>DevOps/Security</strong></td><td>النشر والأمن</td><td>Runbooks</td></tr>
+              <tr><td><strong>Finance/Legal/Privacy</strong></td><td>الامتثال والعقود</td><td>مراجعات</td></tr>
+              <tr><td><strong>Support</strong></td><td>الدعم والشكاوى</td><td>Tickets / CSAT</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>إيقاع الإدارة (Governance Cadence)</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>تخطيط Sprint كل أسبوع أو أسبوعين.</li>
+              <li>اجتماع يومي قصير أثناء التطوير.</li>
+              <li>عرض Demo للإدارة في نهاية Sprint.</li>
+              <li>تقرير أسبوعي للمنجز والمتأخر والمخاطر والقرارات.</li>
+              <li>مراجعة مالية شهرية.</li>
+              <li>مراجعة دورية للأمن والخصوصية والنسخ الاحتياطية.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>مؤشرات المنتج (Product KPIs)</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li><strong>Activation Rate:</strong> إكمال أول خطوة تعليمية</li>
+              <li><strong>Paid Conversion:</strong> الزوار الذين اشتروا</li>
+              <li><strong>Course Completion:</strong> نسبة إكمال الكورس</li>
+              <li><strong>Learning Improvement:</strong> تحسن مهارات مقاسة</li>
+              <li><strong>Retention:</strong> استمرار المستخدم</li>
+              <li><strong>Uptime:</strong> توافر الخدمة</li>
+              <li><strong>Crash-free Sessions:</strong> استقرار التطبيق</li>
+              <li><strong>Support Resolution:</strong> سرعة حل المشكلة</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Guide 16 -->
+      <section class="doc-section" id="guide-16">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">16</span>
+            <h2>خارطة طريق 180 يومًا (26 أسبوعاً)</h2>
+          </div>
+          <span class="part-badge">21 / 25</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الفترة (أسابيع)</th>
+                <th>الأعمال</th>
+                <th>بوابة القرار</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>1–2</strong></td><td>تحليل ومتطلبات وميزانية</td><td>اعتماد SRS و MVP</td></tr>
+              <tr><td><strong>3–4</strong></td><td>UX/UI و Architecture</td><td>اعتماد التصميم و ERD و API</td></tr>
+              <tr><td><strong>5–8</strong></td><td>Core Backend و Identity</td><td>اختبار الصلاحيات و Web</td></tr>
+              <tr><td><strong>9–12</strong></td><td>Courses و Payments</td><td>شراء كامل تجريبي Sandbox</td></tr>
+              <tr><td><strong>13–16</strong></td><td>Player و Exams</td><td>قبول وظيفي و Dashboards</td></tr>
+              <tr><td><strong>17–18</strong></td><td>Flutter و Notifications</td><td>اختبار أجهزة</td></tr>
+              <tr><td><strong>19–20</strong></td><td>AI/RAG و Reports</td><td>تقييم جودة وتكلفة</td></tr>
+              <tr><td><strong>21–22</strong></td><td>Security و Performance</td><td>UAT وإغلاق العيوب</td></tr>
+              <tr><td><strong>23–24</strong></td><td>Pilot وإصلاحات</td><td>Go / No-Go</td></tr>
+              <tr><td><strong>25–26</strong></td><td>إطلاق تدريجي ومراقبة</td><td>مراجعة ما بعد الإطلاق</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">المدة هدف تخطيطي وليست ضماناً؛ تتأثر بموافقات الدفع والبيانات وإنتاج المحتوى والاختبارات.</p>
+      </section>
+
+      <!-- Guide 17 -->
+      <section class="doc-section" id="guide-17">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">17</span>
+            <h2>قوائم مراجعة التنفيذ (Checklists)</h2>
+          </div>
+          <span class="part-badge">22 / 25</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>قبل البرمجة</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.88rem;">
+              <li>اعتماد مالك المنتج و SRS و MVP.</li>
+              <li>اعتماد الميزانية والاحتياطي.</li>
+              <li>تحديد الكيان القانوني والعقود وملكية الكود.</li>
+              <li>مراجعة سياسة البيانات وبيانات القصر.</li>
+              <li>اختيار الاستضافة والدفع والفيديو بعد مقارنة موثقة.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>قبل الدفع الحقيقي</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.88rem;">
+              <li>حساب تاجر وعقد رسمي باسم كيان مخول.</li>
+              <li>اختبار Sandbox لكل وسيلة.</li>
+              <li>توقيع Webhook و Idempotency.</li>
+              <li>سياسة سعر واسترداد وشكاوى.</li>
+              <li>تحديد الفواتير والضرائب مع المحاسب.</li>
+              <li>تجربة Refund و Chargeback و Reconciliation.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>قبل الإطلاق</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.88rem;">
+              <li>اختبار أمني وإغلاق العيوب الحرجة والعالية.</li>
+              <li>اختبار استعادة Backup.</li>
+              <li>مراقبة Logs و Metrics و Alerts.</li>
+              <li>اختبار ضغط وفق الحمل المتوقع.</li>
+              <li>مراجعة العقود والخصوصية وحقوق المحتوى.</li>
+              <li>تجهيز الدعم وخطة الأعطال و Rollback.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>أول 30 يوماً</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.88rem;">
+              <li>متابعة يومية لنجاح الدفع والأخطاء.</li>
+              <li>متابعة أسبوعية للإكمال والشكاوى والاسترداد.</li>
+              <li>تحليل تحميل الصفحات والفيديو.</li>
+              <li>تحليل أسباب الإلغاء وعدم الإكمال.</li>
+              <li>مراجعة مالية فعلية مقابل النموذج.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Guide Appendix -->
+      <section class="doc-section" id="guide-appendix">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">ملحق</span>
+            <h2>قوالب الإدارة والمصطلحات والمراجع القانونية</h2>
+          </div>
+          <span class="part-badge">23–25 / 25</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="table-responsive" style="margin:0;">
+            <table>
+              <thead>
+                <tr><th colspan="2">قالب تقرير أسبوعي</th></tr>
+                <tr><th>الحقل</th><th>المحتوى</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>الفترة</strong></td><td>من / إلى</td></tr>
+                <tr><td><strong>الإنجاز</strong></td><td>مهام مقبولة فقط</td></tr>
+                <tr><td><strong>التسليم</strong></td><td>روابط Demo أو PR أو Test</td></tr>
+                <tr><td><strong>التأخير</strong></td><td>السبب والأثر والموعد</td></tr>
+                <tr><td><strong>المخاطر</strong></td><td>الاحتمال والأثر والتخفيف</td></tr>
+                <tr><td><strong>القرارات</strong></td><td>المسؤول والموعد</td></tr>
+                <tr><td><strong>الإنفاق</strong></td><td>فعلي مقابل الميزانية</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mini-card">
+            <h4>قالب طلب تغيير (Change Request)</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li><strong>رقم الطلب:</strong> _____ | <strong>مقدم الطلب:</strong> _____ | <strong>التاريخ:</strong> _____</li>
+              <li><strong>التغيير المطلوب:</strong> ______________________</li>
+              <li><strong>السبب والقيمة:</strong> ______________________</li>
+              <li><strong>الأثر على الوقت والتكلفة والأمن والخصوصية:</strong> _____</li>
+              <li><strong>القرار:</strong> موافق / مرفوض / مؤجل | <strong>المعتمد:</strong> _____</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>قاموس المصطلحات</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المصطلح</th>
+                <th>المعنى</th>
+                <th>المصطلح</th>
+                <th>المعنى</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>MVP</strong></td><td>أقل نسخة مفيدة قابلة للإطلاق</td><td><strong>CI/CD</strong></td><td>اختبار وبناء ونشر آلي</td></tr>
+              <tr><td><strong>SRS</strong></td><td>وثيقة متطلبات النظام</td><td><strong>Webhook</strong></td><td>إشعار من خدمة خارجية للخادم</td></tr>
+              <tr><td><strong>UX/UI</strong></td><td>تجربة وواجهة المستخدم</td><td><strong>Idempotency</strong></td><td>منع تكرار أثر العملية</td></tr>
+              <tr><td><strong>API</strong></td><td>واجهة تواصل بين الأنظمة</td><td><strong>SLA</strong></td><td>مستوى الخدمة المتفق عليه</td></tr>
+              <tr><td><strong>ERD</strong></td><td>مخطط الكيانات والعلاقات</td><td><strong>CAC/LTV</strong></td><td>تكلفة اكتساب العميل وقيمته طوال العلاقة</td></tr>
+              <tr><td><strong>RBAC</strong></td><td>صلاحيات حسب الدور</td><td><strong>GMV</strong></td><td>إجمالي قيمة المبيعات عبر السوق</td></tr>
+              <tr><td><strong>Multi-tenant</strong></td><td>خدمة مؤسسات متعددة مع عزل بيانات</td><td><strong>VAT/CIT</strong></td><td>القيمة المضافة / ضريبة دخل الشركات</td></tr>
+              <tr><td><strong>RAG</strong></td><td>استرجاع من قاعدة معرفة قبل توليد الإجابة</td><td><strong>UAT / Rollback</strong></td><td>اختبار قبول المستخدم / الرجوع لإصدار مستقر</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>المراجع الرسمية وإخلاء المسؤولية</h3>
+        <ul class="styled-list" style="font-size:0.9rem;">
+          <li><strong>قانون حماية المستهلك 181/2018</strong> (WIPO Lex) | <strong>قانون الملكية الفكرية 82/2002</strong> (WIPO Lex).</li>
+          <li><strong>قانون VAT 67/2016</strong> (ETA) | <strong>دليل الخدمات الرقمية</strong> (ETA).</li>
+          <li><strong>ضريبة دخل الشركات</strong> (PwC 2026) | <strong>التحديثات الضريبية 2026</strong> (EY).</li>
+          <li><strong>اللائحة التنفيذية لحماية البيانات 816/2025</strong> | <strong>تحليل اللائحة</strong> (Al Tamimi).</li>
+          <li><strong>Kashier Developers & Pricing</strong> | <strong>قانون التوقيع الإلكتروني</strong> (ITIDA).</li>
+        </ul>
+        <div class="callout warning">
+          <strong>إخلاء مسؤولية:</strong> الوثيقة مرجع تخطيطي ولا تحل محل عقد التطوير أو دراسة جدوى تفصيلية أو رأي محاسب أو محام أو اختبار أمني مستقل. النص العربي الرسمي هو المرجع عند التعارض مع الترجمات. حدث الأرقام واللوائح وشروط الموردين قبل التعاقد. لا توصف أي ميزة بأنها متاحة قبل تنفيذها واختبارها.
+        </div>
+      </section>
+
+
+      <!-- =========================================================
+           PART 3: DEVELOPMENT IMPLEMENTATION PACKAGE (V4.0)
+           ========================================================= -->
+      <div class="part-banner">
+        <h2>الجزء الثالث: حزمة التطوير التنفيذية (DEVELOPMENT IMPLEMENTATION PACKAGE - V4.0)</h2>
+        <p style="margin:0; color:#cbd5e1;">SRS | Database Migrations | OpenAPI | Web | Flutter | Security — الوحدة الرئيسية:Devsphere Code LIVE (Virtual Classroom Platform)</p>
+      </div>
+
+      <!-- Dev 1 -->
+      <section class="doc-section" id="dev-1">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">01</span>
+            <h2>نطاق حزمة التطوير وحالة التسليم</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 1-2</span>
+        </div>
+        <p>وثيقة مواصفات ومصادر بداية لا تعني اكتمال البرمجة أو تشغيل بيئة إنتاجية. تحول هذه الحزمة تصميم <strong> LIVE</strong> إلى عقود ومصادر بداية يستطيع فريق التطوير مراجعتها وربطها بمستودع Devsphere Code وهي مضافة إلى الوثيقة الرئيسية وليست بديلاً عن SRS العام.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المخرج</th>
+                <th>ما تم تجهيزه</th>
+                <th>حالة التسليم</th>
+              </tr>
+            </thead>Devsphere Code
+            <tbody>
+              <tr><td><strong>SRS</strong></td><td>الأدوار الحالات السياسات متطلبات الجودة والقبول</td><td>مواصفات ضمن هذا الملحق</td></tr>
+              <tr><td><strong>Database Migration</strong></td><td>SQL تأسيسي لجداول Devsphere Code LIVE وفهارسها وقيودها</td><td>ملف مصدر قابل للمراجعة</td></tr>
+              <tr><td><strong>OpenAPI</strong></td><td>عقد API بصيغة OpenAPI 3.1</td><td>ملف YAML بداية</td></tr>
+              <tr><td><strong>Web</strong></td><td>مكوّن React / Next.js أولي للاتصال</td><td>Scaffold يحتاج دمجاً واختباراً</td></tr>
+              <tr><td><strong>Flutter</strong></td><td>هيكل شاشة اتصال ودورة حياة Room</td><td>Scaffold يحتاج تثبيت إصدار SDK</td></tr>
+              <tr><td><strong>Security & QA</strong></td><td>ضوابط الحماية والاختبارات وبوابات الإطلاق</td><td>قائمة تنفيذ ومراجعة</td></tr>
+              <tr><td><strong>AI Prompts</strong></td><td>برومبتات تنفيذ ومراجعة واختبار</td><td>ملف مستقل</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout warning">
+          <strong>حدود مهمة والقرارات المعتمدة:</strong> لا يمكن وصف SQL بأنه Migration إنتاجي نهائي قبل مطابقته مع أسماء الجداول والمفاتيح الفعلية في قاعدة Devsphere Code الأساسية، ولا يمكن اعتبار مكوّنات Web/Flutter تطبيقاً مكتملاً. يجب بناء واختبار التكامل داخل المستودع الحقيقي.
+          <br><strong>القرارات المعتمدة:</strong> المحاضرات: Interactive + Broadcast | التسجيل: Automatic + Optional وفق سياسة الأكاديمية والموافقات | الاستضافة: Hybrid مع تثبيت كل جلسة على مزود / منطقة واحدة | محرك الاتصال: LiveKit خلف Provider Adapter | التقنيات: Web: Next.js | Mobile: Flutter | Backend: NestJS.
+        </div>
+      </section>
+
+      <!-- Dev 2 -->
+      <section class="doc-section" id="dev-2">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">02</span>
+            <h2>SRS – المتطلبات الوظيفية وغير الوظيفية</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 3</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الدور</th>
+                <th>الصلاحيات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Owner / Admin</strong></td><td>إعداد السياسات، إدارة الجداول، مراقبة التقارير وإدارة المستخدمين المخولين.</td></tr>
+              <tr><td><strong>Teacher / Host</strong></td><td>إنشاء أو بدء الجلسة المصرح بها، إدارة المشاركين، المحادثة والسبورة والتسجيل وفق السياسة.</td></tr>
+              <tr><td><strong>Moderator</strong></td><td>الإشراف على المحادثة، الكتم والإزالة والإبلاغ ضمن الصلاحيات.</td></tr>
+              <tr><td><strong>Student</strong></td><td>الانضمام عند استيفاء التسجيل والصلاحية، التفاعل وفق وضع الجلسة.</td></tr>
+              <tr><td><strong>Super Admin</strong></td><td>إدارة المنصة على مستوى النظام مع تسجيل كل إجراء حساس.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>المتطلبات الوظيفية (FR-01 إلى FR-12)</h3>
+        <ol class="styled-list">
+          <li><strong>FR-01:</strong> إنشاء جلسة وربطها بأكاديمية وكورس ومدرس وموعد.</li>
+          <li><strong>FR-02:</strong> دعم وضعي Interactive و Broadcast.</li>
+          <li><strong>FR-03:</strong> التحقق من تسجيل الطالب في الكورس قبل إصدار رمز الاتصال.</li>
+          <li><strong>FR-04:</strong> إصدار رمز قصير العمر بأقل صلاحيات لازمة.</li>
+          <li><strong>FR-05:</strong> رفع اليد والمحادثة والاستطلاعات والسبورة ومشاركة الشاشة حسب الدور.</li>
+          <li><strong>FR-06:</strong> تسجيل تلقائي أو اختياري وفق سياسة الأكاديمية والموافقة المطلوبة.</li>
+          <li><strong>FR-07:</strong> إدارة التسجيلات الخاصة وروابط المشاهدة المؤقتة.</li>
+          <li><strong>FR-08:</strong> احتساب الحضور من أحداث الانضمام والخروج وإعادة الاتصال.</li>
+          <li><strong>FR-09:</strong> استقبال Webhooks والتحقق من التوقيع ومنع تكرار الحدث.</li>
+          <li><strong>FR-10:</strong> دمج الحضور وبيانات الجلسة في Devsphere Code STUDENT 360.</li>
+          <li><strong>FR-11:</strong> إدارة البلاغات والكتم والإزالة والحظر وتسجيلها.</li>
+          <li><strong>FR-12:</strong> دعم الانقطاع وإعادة الاتصال وإظهار حالة جودة الشبكة.</li>
+        </ol>
+
+        <h3>متطلبات غير وظيفية (NFR)</h3>
+        <ul class="styled-list">
+          <li>عزل Tenant على مستوى الخادم، واختبارات تمنع الوصول المتبادل.</li>
+          <li>زمن استجابة مناسب للـ API، مع تحديد SLO بعد اختبار الحمل الواقعي.</li>
+          <li>إمكانية التوسع الأفقي لمكونات الاتصال والتسجيل.</li>
+          <li>إتاحة سجلات مراقبة Metrics/Logs/Traces دون تسجيل أسرار أو محتوى حساس غير لازم.</li>
+          <li>واجهة عربية RTL وإنجليزية LTR مع دعم الوصول Accessibility.</li>
+          <li>قابلية الاستعادة من النسخ الاحتياطية واختبارها دورياً.</li>
+        </ul>
+      </section>
+
+      <!-- Dev 3 -->
+      <section class="doc-section" id="dev-3">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">03</span>
+            <h2>SRS – حالات الاستخدام وقواعد العمل</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 4</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>إنشاء المحاضرة</h4>
+            <ol class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>المدرس أو المدير يرسل بيانات الكورس والموعد والنمط وسياسة التسجيل.</li>
+              <li>الخادم يتحقق من صلاحية الدور وانتماء الكورس إلى Tenant نفسه.</li>
+              <li>تنشأ جلسة بحالة Scheduled، ويُنشأ Room عند البدء أو وفق سياسة التهيئة.</li>
+              <li>ترسل إشعارات للطلاب المسجلين في الكورس.</li>
+            </ol>
+          </div>
+          <div class="mini-card">
+            <h4>دخول الطالب</h4>
+            <ol class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>الطالب يطلب Join Token من Backend بجلسة مصادق عليها.</li>
+              <li>الخادم يتحقق من المستخدم و Tenant والتسجيل الفعال ووقت الجلسة والحظر.</li>
+              <li>الخادم يصدر Token محدوداً قصير العمر لا يوقعه تطبيق الويب أو الهاتف.</li>
+              <li>تُسجل أحداث الاتصال والحضور عبر أحداث المزود مع إزالة التكرار.</li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>قواعد العمل وسياسات التسجيل</h3>
+        <ul class="styled-list">
+          <li>لا يثق الخادم في <code>tenant_id</code> أو <code>role</code> أو السعر أو حالة الدفع الواردة من العميل.</li>
+          <li>تغيير حالة الجلسة يتم عبر انتقالات مسموح بها فقط: <code>Scheduled → Live → Ended</code> أو <code>Scheduled → Cancelled</code>.</li>
+          <li>لا يمكن للطالب تشغيل التسجيل أو إدارة الغرفة.</li>
+          <li>لا تُعرض التسجيلات إلا بعد التحقق من صلاحية المشاهدة، ولا تستخدم روابط عامة دائمة.</li>
+          <li>الحضور لا يساوي الانتباه: مدة الاتصال ليست مقياساً قطعيًا للتركيز أو التعلم.</li>
+          <li>يمكن للمدرس مراجعة سجلات الحضور وتصحيح الأخطاء مع حفظ سجل التدقيق.</li>
+          <li><strong>قاعدة أمان:</strong> كل قرار صلاحية يتم على الخادم. الواجهة تعرض ما يسمح به الخادم ولا تمنح الصلاحيات بنفسها.</li>
+          <li><strong>سياسات التسجيل:</strong> تحدد الأكاديمية هل التسجيل تلقائي أو اختياري أو معطل. يجب إظهار إشعار واضح، وتسجيل الموافقات أو الأساس القانوني المناسب، وإتاحة البديل عند اللزوم، وتحديد الاحتفاظ والحذف والوصول. يراجع محامٍ مصري سياسة تسجيل الطلاب القصر والبيانات الشخصية قبل التشغيل.</li>
+        </ul>
+      </section>
+
+      <!-- Dev 4 -->
+      <section class="doc-section" id="dev-4">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">04</span>
+            <h2>بنية البيانات Database Migration</h2>
+          </div>
+          <span class="part-badge">0001_live_core.sql | 5</span>
+        </div>
+        <p>ملف SQL المرفق <code>0001_live_core.sql</code> يحتوي جداول الجلسات والغرف والمشاركين وصلاحيات الدخول والحضور والموافقات والتسجيلات والمحادثة والإشراف والاستطلاعات والـ Webhooks وجودة الاتصال وسجل التدقيق.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الجدول</th>
+                <th>الغرض</th>
+                <th>ملاحظات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>live_sessions</code></td><td>تعريف المحاضرة وحالتها ونمطها</td><td>tenant/course/teacher</td></tr>
+              <tr><td><code>live_rooms</code></td><td>ربط الجلسة بمزود الاتصال</td><td>Provider Adapter</td></tr>
+              <tr><td><code>live_participants</code></td><td>المشاركون وأدوارهم</td><td>قيد فريد للجلسة والمستخدم</td></tr>
+              <tr><td><code>live_access_grants</code></td><td>أثر منح / إبطال صلاحية الدخول</td><td>لا يخزن Token خام</td></tr>
+              <tr><td><code>live_attendance</code></td><td>أحداث الانضمام والخروج</td><td>إعادة الاتصال واردة</td></tr>
+              <tr><td><code>live_recording_consents</code></td><td>أثر الموافقة وإصدار السياسة</td><td>قابل للتدقيق</td></tr>
+              <tr><td><code>live_recordings</code></td><td>حالة التسجيل ومفتاح التخزين</td><td>Private Storage</td></tr>
+              <tr><td><code>live_webhook_events</code></td><td>منع تكرار أحداث المزود</td><td>Unique provider/event</td></tr>
+              <tr><td><code>live_audit_logs</code></td><td>سجل الإجراءات الحساسة</td><td>تقييد التعديل</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>ملاحظات قبل الإنتاج</h3>
+        <ul class="styled-list">
+          <li>تأكيد وجود الجداول الأساسية <code>tenants/users/courses</code> وتطابق أنواع المفاتيح.</li>
+          <li>إضافة Composite Foreign Keys عبر <code>tenant_id</code> لضمان تطابق العلاقات.</li>
+          <li>تفعيل RLS بعد تصميم سياق Tenant موثوق من الخادم، مع اختبار <code>FORCE RLS</code>.</li>
+          <li>مراجعة Cascade Delete بعناية: لا تحذف الأدلة المالية أو القانونية دون سياسة.</li>
+          <li>إضافة Retention Jobs وحذف آمن للبيانات حسب السياسة.</li>
+          <li>تشغيل migration في بيئة تجريبية، واختبار forward/rollback والنسخ الاحتياطي.</li>
+        </ul>
+        <div class="callout danger">
+          لا تشغل الملف مباشرة على قاعدة الإنتاج. هو Migration تأسيسي يحتاج مراجعة Schema الفعلية، ومراجعة DBA واختبارات ترحيل واستعادة.
+        </div>
+      </section>
+
+      <!-- Dev 5 -->
+      <section class="doc-section" id="dev-5">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">05</span>
+            <h2>عقد الواجهات OpenAPI</h2>
+          </div>
+          <span class="part-badge">openapi.yaml (OpenAPI 3.1) | 6</span>
+        </div>
+        <p>الملف <code>openapi.yaml</code> يعرّف API بداية وفق OpenAPI 3.1. يجب تثبيت العقد النهائي بعد مراجعة DTOs وطرق المصادقة في مشروع NestJS.</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المسار</th>
+                <th>الطريقة</th>
+                <th>الغرض</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>/live/sessions</code></td><td>GET / POST</td><td>عرض وإنشاء الجلسات</td></tr>
+              <tr><td><code>/live/sessions/{id}</code></td><td>GET / PATCH</td><td>التفاصيل والتعديل</td></tr>
+              <tr><td><code>/live/sessions/{id}/start</code></td><td>POST</td><td>بدء الجلسة</td></tr>
+              <tr><td><code>/live/sessions/{id}/join-token</code></td><td>POST</td><td>التحقق وإصدار رمز اتصال</td></tr>
+              <tr><td><code>/live/sessions/{id}/end</code></td><td>POST</td><td>إنهاء الجلسة</td></tr>
+              <tr><td><code>/live/sessions/{id}/recordings</code></td><td>GET</td><td>التسجيلات المسموح بها</td></tr>
+              <tr><td><code>/live/sessions/{id}/moderation</code></td><td>POST</td><td>الكتم والإزالة والحظر</td></tr>
+              <tr><td><code>/live/webhooks/livekit</code></td><td>POST</td><td>أحداث المزود بعد التحقق</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>قواعد API</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>توحيد Error Envelope مع code و message و requestId.</li>
+              <li>Pagination و Filtering للنتائج الطويلة.</li>
+              <li>Idempotency للعمليات الحساسة و Webhook events.</li>
+              <li>Rate Limits على join-token و chat والبلاغات.</li>
+              <li>عدم إرجاع أسرار المزود أو مفاتيح التخزين.</li>
+              <li>توثيق حالات 401 و 403 و 404 و 409 و 422 و 429 و 500.</li>
+            </ul>
+          </div>
+          <div class="code-wrapper" style="margin:0;">
+            <div class="code-header">
+              <span>مثال استجابة دخول</span>
+              <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+            </div>
+            <pre>{
+  "success": true,
+  "data": {
+    "serverUrl": "wss://live.example.com",
+    "token": "SHORT_LIVED_TOKEN",
+    "roomName": "room-id",
+    "expiresIn": 300
+  }
+}</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dev 6 -->
+      <section class="doc-section" id="dev-6">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">06</span>
+            <h2>حزمة الواجهات Web & Flutter</h2>
+          </div>
+          <span class="part-badge">Next.js & Flutter | 7</span>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>Web (Next.js)</h4>
+            <p style="font-size:0.9rem; margin:0;">الملف <code>web/LiveRoom.tsx</code> يحتوي مكوّناً ابتدائياً يطلب رمز الاتصال من Backend ثم يمرره إلى LiveKit React Components. يحتاج إلى ضبط إصدار الحزم، المصادقة، معالجة حالات الاتصال، واجهة RTL، صلاحيات الأجهزة، وأزرار التحكم المتوافقة مع دور المستخدم.</p>
+          </div>
+          <div class="mini-card">
+            <h4>Flutter</h4>
+            <p style="font-size:0.9rem; margin:0;">الملف <code>mobile/live_room.dart</code> يقدم هيكل State Lifecycle للاتصال والانفصال والتعامل مع الخطأ. يلزم تثبيت إصدار متوافق من <code>livekit_client</code>، وبناء Widgets للمشاركين والمسارات الصوتية والمرئية، والتعامل مع أذونات Android/iOS والإشعارات والمكالمات في الخلفية.</p>
+          </div>
+        </div>
+
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Join Token Sequence (Web & Flutter)</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre>POST /api/v1/live/sessions/{sessionId}/join-token
+Authorization: authenticated session
+
+Backend validates:
+  - user identity and tenant
+  - active course enrollment
+  - session state and allowed join window
+  - participant role and moderation status
+Backend signs short-lived LiveKit token.
+Client connects using returned serverUrl + token.</pre>
+        </div>
+
+        <h3>الشاشات المطلوبة</h3>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الشاشة</th>
+                <th>المستخدم</th>
+                <th>المكونات</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Live Schedule</strong></td><td>طالب / مدرس</td><td>التقويم، الكورس، حالة الجلسة</td></tr>
+              <tr><td><strong>Teacher Studio</strong></td><td>مدرس</td><td>إعداد المايك والكاميرا، بدء / إنهاء، إدارة التسجيل</td></tr>
+              <tr><td><strong>Interactive Room</strong></td><td>الكل</td><td>شبكة فيديو، مشاركة شاشة، سبورة، محادثة</td></tr>
+              <tr><td><strong>Broadcast Room</strong></td><td>طالب</td><td>مشغل البث، أسئلة، استطلاع، رفع يد</td></tr>
+              <tr><td><strong>Recording Library</strong></td><td>مصرح له</td><td>قائمة التسجيلات ومشغل محمي</td></tr>
+              <tr><td><strong>Live Admin</strong></td><td>مدير</td><td>الجلسات، تقارير الجودة، البلاغات والسياسات</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.85rem; color:var(--text-muted);">مكوّنات الويب والهاتف Scaffold وليست تطبيقاً جاهزاً. لا بد من دمجها في المستودع واختبارها على أجهزة ومتصفحات حقيقية.</p>
+      </section>
+
+      <!-- Dev 7 -->
+      <section class="doc-section" id="dev-7">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">07</span>
+            <h2>ضوابط الحماية – Security</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 8</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>المجال</th>
+                <th>الضابط المطلوب</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Identity</strong></td><td>جلسات آمنة و MFA للإدارة — <em>دليل الاختبار:</em> اختبار انتهاء الجلسة والإبطال</td></tr>
+              <tr><td><strong>Authorization</strong></td><td>RBAC + Tenant isolation — <em>دليل الاختبار:</em> اختبار cross-tenant access</td></tr>
+              <tr><td><strong>Live tokens</strong></td><td>توقيع server-side و TTL قصير — <em>دليل الاختبار:</em> محاولة استخدام رمز منتهي / ملغى</td></tr>
+              <tr><td><strong>Webhooks</strong></td><td>توقيع صحيح + deduplication — <em>دليل الاختبار:</em> إعادة إرسال الحدث والتوقيع الخاطئ</td></tr>
+              <tr><td><strong>Recordings</strong></td><td>Private bucket + signed playback URL — <em>دليل الاختبار:</em> محاولة الوصول دون صلاحية</td></tr>
+              <tr><td><strong>Network</strong></td><td>TLS و Firewall و TURN حسب الحاجة — <em>دليل الاختبار:</em> مراجعة إعدادات الشبكة</td></tr>
+              <tr><td><strong>Secrets</strong></td><td>Secret Manager وتدوير المفاتيح — <em>دليل الاختبار:</em> فحص المستودع وبيئة التشغيل</td></tr>
+              <tr><td><strong>Operations</strong></td><td>Monitoring و Backup و Incident plan — <em>دليل الاختبار:</em> اختبار استعادة وتنبيه</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="cards-grid">
+          <div class="mini-card">
+            <h4>ضوابط الخصوصية</h4>
+            <ul class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>تقليل البيانات الشخصية التي تجمعها المنصة.</li>
+              <li>تحديد غرض التسجيل ومدته ومن يراه.</li>
+              <li>إظهار إشعار التسجيل وجمع الموافقات / الأساس القانوني المناسب.</li>
+              <li>وضع ضوابط إضافية للمستخدمين القصر ومراجعة متطلبات ولي الأمر.</li>
+              <li>عدم تخزين قوالب الوجه محلياً؛ إن أمكن مزود خارجي وموافقة وبديل يدوي عند الضرورة.</li>
+              <li>عدم الادعاء بمنع تسجيل الشاشة أو التصوير الخارجي بنسبة 100%.</li>
+            </ul>
+          </div>
+          <div class="mini-card">
+            <h4>بوابات أمنية قبل الإنتاج (6 بوابات)</h4>
+            <ol class="styled-list" style="margin:0; font-size:0.9rem;">
+              <li>Threat Model مع مالك لكل خطر.</li>
+              <li>Code Review و Dependency Scan.</li>
+              <li>اختبار صلاحيات و Tenant isolation.</li>
+              <li>اختبار Token expiry و Webhook replay.</li>
+              <li>اختبار استعادة Backup.</li>
+              <li>مراجعة قانونية للخصوصية والتسجيل والبيانات العابرة للحدود.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- Dev 8 -->
+      <section class="doc-section" id="dev-8">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">08</span>
+            <h2>QA – خطة الاختبار ومعايير القبول</h2>
+          </div>
+          <span class="part-badge">QA-01 إلى QA-12 | 9</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>الاختبار</th>
+                <th>معيار النجاح</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>QA-01</strong></td><td>طالب مسجل يدخل جلسة مفتوحة</td><td>ينضم بصلاحيات طالب محدودة</td></tr>
+              <tr><td><strong>QA-02</strong></td><td>طالب غير مسجل يطلب الدخول</td><td>403 ولا يصدر Token</td></tr>
+              <tr><td><strong>QA-03</strong></td><td>طالب يحاول صلاحية Host</td><td>رفض من الخادم</td></tr>
+              <tr><td><strong>QA-04</strong></td><td>جلسة Broadcast</td><td>الطالب يشاهد ولا ينشر AV افتراضياً</td></tr>
+              <tr><td><strong>QA-05</strong></td><td>جلسة Interactive</td><td>النشر وفق أذونات المضيف والسياسة</td></tr>
+              <tr><td><strong>QA-06</strong></td><td>تسجيل تلقائي / اختياري</td><td>السياسة والموافقة ظاهرتان ومسجلتان</td></tr>
+              <tr><td><strong>QA-07</strong></td><td>إعادة Webhook</td><td>لا يتكرر الأثر</td></tr>
+              <tr><td><strong>QA-08</strong></td><td>تسجيل خاص بحساب آخر</td><td>لا يحصل على رابط مشاهدة</td></tr>
+              <tr><td><strong>QA-09</strong></td><td>قطع الشبكة وإعادتها</td><td>حالة واضحة وإعادة اتصال آمنة</td></tr>
+              <tr><td><strong>QA-10</strong></td><td>اختبار مؤسسات متعددة</td><td>لا تسرب بين Tenant وآخر</td></tr>
+              <tr><td><strong>QA-11</strong></td><td>ضغط متزامن</td><td>تحقيق SLO المتفق عليه بعد اختبار الحمل</td></tr>
+              <tr><td><strong>QA-12</strong></td><td>Backup restore</td><td>استعادة ناجحة موثقة</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>معايير قبول Devsphere Code LIVE</h3>
+        <ul class="styled-list">
+          <li>كل اختبار أمني حرج يمر قبل الإطلاق.</li>
+          <li>لا توجد ثغرات Critical أو High مفتوحة دون قبول مخاطر موثق.</li>
+          <li>التسجيلات غير عامة، وموافقات التسجيل قابلة للتدقيق.</li>
+          <li>الحضور يتكامل مع Devsphere Code STUDENT 360.</li>
+          <li>توثيق خطة Rollback ومراقبة ما بعد النشر.</li>
+        </ul>
+      </section>
+
+      <!-- Dev 9 -->
+      <section class="doc-section" id="dev-9">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">09</span>
+            <h2>خطة الدمج والتسليم للفريق</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 10</span>
+        </div>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الحزمة</th>
+                <th>المسؤول المقترح</th>
+                <th>مخرج التسليم</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Core schema review</strong></td><td>Backend Lead / DBA</td><td>Migration معتمدة ومختبرة</td></tr>
+              <tr><td><strong>NestJS module</strong></td><td>Backend Engineer</td><td>Services, Controllers, Guards, Webhooks</td></tr>
+              <tr><td><strong>Provider Adapter</strong></td><td>Realtime Engineer</td><td>LiveKit Cloud/Self-hosted adapter</td></tr>
+              <tr><td><strong>Web classroom</strong></td><td>Frontend Engineer</td><td>Teacher + Student experiences</td></tr>
+              <tr><td><strong>Flutter classroom</strong></td><td>Mobile Engineer</td><td>Android/iOS room lifecycle</td></tr>
+              <tr><td><strong>QA & Security</strong></td><td>QA/Security Engineer</td><td>Evidence, reports, release gates</td></tr>
+              <tr><td><strong>Operations</strong></td><td>DevOps</td><td>Monitoring, secrets, backups, runbooks</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>ترتيب التنفيذ (8 خطوات)</h3>
+        <ol class="styled-list">
+          <li>مراجعة قاعدة Devsphere Codeالأساسية و SRS.</li>
+          <li>تثبيت عقود API وحالات الجلسة.</li>
+          <li>تطبيق Migration على بيئة تطوير واختبار عزل المؤسسات.</li>
+          <li>تنفيذ NestJS authorization/token/webhook services.</li>
+          <li>دمج Web ثم Flutter على بيئة Staging.</li>
+          <li>تفعيل التسجيل والتخزين الخاص وسياسات الموافقة.</li>
+          <li>تنفيذ QA والأمن واختبار الحمل.</li>
+          <li>Pilot محدود، ثم إطلاق تدريجي بعد بوابات القبول.</li>
+        </ol>
+        <div class="callout success">
+          <strong>قاعدة التسليم:</strong> لا يقبل أي جزء دون كود في المستودع، مراجعة، اختبارات ناجحة، توثيق، ومالك واضح للتشغيل.
+        </div>
+      </section>
+
+      <!-- Dev 10 -->
+      <section class="doc-section" id="dev-10">
+        <div class="section-header">
+          <div class="section-title-group">
+            <span class="sec-num">10</span>
+            <h2>الملفات المصدرية والبرومبتات والمصادر الرسمية</h2>
+          </div>
+          <span class="part-badge">ملحق التطوير التنفيذي | 11</span>
+        </div>
+        <p>أرفقت حزمة مصدرية مستقلة قابلة للمراجعة، إلى جانب هذه الوثيقة:</p>
+
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>الملف</th>
+                <th>المحتوى</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>001_live_core.sql</code></td><td>جداول SQL التأسيسية لـ Devsphere Code LIVE</td></tr>
+              <tr><td><code>openapi.yaml</code></td><td>عقد واجهات API بصيغة OpenAPI 3.1</td></tr>
+              <tr><td><code>web/LiveRoom.tsx</code></td><td>مكوّن اتصال Next.js/React ابتدائي</td></tr>
+              <tr><td><code>mobile/live_room.dart</code></td><td>هيكل Flutter أولي لدورة حياة الاتصال</td></tr>
+              <tr><td><code>prompts/master-prompts.md</code></td><td>برومبتات Backend و Web و Flutter والأمن و QA</td></tr>
+              <tr><td><code>docs/production-gates.md</code></td><td>قرارات التنفيذ وبوابات الإنتاج</td></tr>
+              <tr><td><code>README.md</code></td><td>تعليمات الاستخدام وحدود الحزمة</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>برومبت التطوير الموحد - مختصر</h3>
+        <div class="code-wrapper">
+          <div class="code-header">
+            <span>Unified Engineering Prompt (English)</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ البرومبت</button>
+          </div>
+          <pre>Act as the senior engineering team for Devsphere Code.
+Read the project SRS, SQL migration and OpenAPI contract first.
+Inspect the existing repository and core schema before coding.
+Implement Devsphere Code LIVE with NestJS, PostgreSQL, Next.js, Flutter
+and LiveKit behind a provider adapter. Enforce tenant isolation,
+server-side RBAC, enrollment checks, short-lived least-privilege
+tokens, signed webhooks, event idempotency and private recordings.
+Implement both interactive and broadcast modes, and automatic
+plus teacher-optional recording under documented consent policy.
+Add tests, observability, backups, deployment and rollback docs.
+Never claim a feature is complete without code and test evidence.
+Never expose secrets or trust client-supplied roles/tenant IDs.</pre>
+        </div>
+
+        <h3>مصادر تقنية رسمية</h3>
+        <ul class="styled-list" style="direction:ltr; text-align:left; font-family:'Fira Code', monospace; font-size:0.85rem;">
+          <li>https://docs.livekit.io/</li>
+          <li>https://docs.nestjs.com/</li>
+          <li>https://nextjs.org/docs</li>
+          <li>https://docs.flutter.dev/</li>
+          <li>https://spec.openapis.org/oas/v3.1.0</li>
+        </ul>
+      </section>
+
+      <footer class="doc-footer">
+        <p><strong>Devsphere Code| Devsphere International</strong> — تم إعداد هذه الحزمة كمخرجات تصميم ومصادر بداية يلزم تنفيذها ومراجعتها واختبارها والتعاقد مع مزودي الخدمة قبل اعتبارها نظاماً إنتاجياً.</p>
+      </footer>
+
+    </main>
+  </div>
+
+  <script>
+    // 1. Theme Switcher (Blueprint / Dots / Dark)
+    function setTheme(themeName, btnElement) {
+      document.body.className = 'theme-' + themeName;
+      document.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+      if (btnElement) btnElement.classList.add('active');
+      localStorage.setItem('Devsphere Code_doc_theme', themeName);
+    }
+
+    // Load saved theme if available
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('Devsphere Code_doc_theme');
+      if (saved) {
+        const targetBtn = Array.from(document.querySelectorAll('.theme-btn')).find(b => b.getAttribute('onclick').includes(saved));
+        setTheme(saved, targetBtn);
+      }
+    });
+
+    // 2. Reading Progress Bar & Active TOC Highlight
+    window.addEventListener('scroll', () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById('progressBar').style.width = scrolled + '%';
+
+      // Active link in sidebar
+      const sections = document.querySelectorAll('.doc-section');
+      const navLinks = document.querySelectorAll('.toc-list a');
+      let current = '';
+      sections.forEach(sec => {
+        const top = sec.offsetTop - 130;
+        if (window.scrollY >= top) {
+          current = sec.getAttribute('id');
+        }
+      });
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (current && link.getAttribute('href') === '#' + current) {
+          link.classList.add('active');
+        }
+      });
+    });
+
+    // 3. Instant Live Search Filter
+    function filterSections() {
+      const query = document.getElementById('docSearch').value.toLowerCase().trim();
+      const sections = document.querySelectorAll('.doc-section');
+      sections.forEach(sec => {
+        const text = sec.innerText.toLowerCase();
+        sec.style.display = text.includes(query) ? 'block' : 'none';
+      });
+    }
+
+    // 4. Copy Code / Prompts Helper
+    function copyCode(button) {
+      const pre = button.closest('.code-wrapper').querySelector('pre');
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        const originalText = button.innerText;
+        button.innerText = '✅ تم النسخ!';
+        setTimeout(() => { button.innerText = originalText; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
